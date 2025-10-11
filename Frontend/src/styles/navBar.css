@@ -1,0 +1,61 @@
+.navBarContainer {
+    background-color: #072441;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+}
+
+.navBarLogoTitulo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; 
+  
+}
+
+.navBarLogo {
+  height: 40px; 
+  width: auto;
+  margin-right: 1rem;
+}
+
+.navBarTitulo {
+    color: #ecf0f1;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navBarLinks {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; 
+    font-weight: bold;
+}
+
+.navBarLinks a {
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 0.5rem 1rem; 
+    border-radius: 5px; 
+    transition: background-color 0.3s ease;
+}
+
+.navBarLinks a:hover {
+    background-color: #294866; 
+}
+
+.IniciarSesionButton {
+    background-color: #2865a1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.navBarLinks a.IniciarSesionButton:hover {
+  background-color: #4574a3;
+  border: 1px solid #ffffff;
+  padding: 0.4rem 0.95rem; 
+}

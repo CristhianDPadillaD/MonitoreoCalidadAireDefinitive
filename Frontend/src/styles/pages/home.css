@@ -1,0 +1,150 @@
+.containerGeneral{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem;
+    background-color: #f4f6f8;
+}
+
+.calidadAireContainer {
+    flex: 2;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.calidadAireTitulo {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333333;
+    text-align: center;
+}
+
+.graficaTermometroContainer{
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;;
+}
+
+.termometroCard {
+  background-color: #f9f9f9;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+  padding: 1.5rem;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.estadoCalidad {
+  margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #555555;
+    text-align: center;
+    background-color: #dceaf7;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+/*para editar por separado cada grafica de termometro*/
+.termometroCard.co {
+  border-color: #4caf50;
+}
+
+.termometroCard.pm10 {
+  border-color: #2196f3;
+}
+/*----------------------------------------------------*/
+
+.verMas {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #555555;
+    text-align: center;
+    background-color: #dceaf7;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.verMasButton {
+    background-color: #2865a1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 0.4rem 0.95rem; 
+    margin-left: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.verMasButton:hover {
+  background-color: #1b4e7a;
+}
+
+.comoSeMideContainer {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+.comoSeMideTitulo {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333333;
+    text-align: center;
+}
+
+.comoSeMideContenido  {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    gap: 1rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.excelenteContainer {
+    background-color: #bcdce9;
+    color: black;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem;
+}
+
+.buenaContainer {
+    background-color: #d3f3d5;
+    color: black;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem;
+}
+
+.regularContainer {
+    background-color: #f1f3d3;
+    color: black;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem;
+}
+
+.malaContainer {
+    background-color: #f3d3d3;
+    color: black;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem;
+}
