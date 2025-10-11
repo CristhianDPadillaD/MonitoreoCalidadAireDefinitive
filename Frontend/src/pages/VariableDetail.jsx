@@ -4,19 +4,22 @@ import GraficoDispersionLive from "../components/graficos/GraficoDispersionLive"
 import Histograma10Dias from "../components/graficos/Histograma10Dias";
 import AnilloDiario from "../components/graficos/AnilloDiario";
 import { VARIABLES } from "../config/variables";
+import "../styles/pages/variableDetail.css";
 
 export default function VariableDetail() {
   const { key } = useParams();
   const v = VARIABLES.find(x => x.key === key) || VARIABLES[0];
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <Link to="/" className="text-sm mb-4 inline-block">← Volver</Link>
-      <h1 className="text-3xl font-bold mb-4">{v.label}</h1>
-      <p className="text-sm text-gray-600 mb-4">Nivel de {v.label} visto en tiempo real</p>
+    <div className="variableDetailContainer">
+      <Link to="/" className="volverButton">
+        ← Volver
+      </Link>
+      <h1 className="variableTitulo">{v.label}</h1>
+      <p className="variableSubtitulo">Nivel de {v.label} visto en tiempo real</p>
 
-      <GraficoDispersionLive variable={v.key} />
+      <GraficoDispersionLive variable={v.key} className="graficoTiempoReal" />
 
-      <div className="grid grid-cols-2 gap-4 mt-4">
+      <div className="variablePromediosContainer">
         <Histograma10Dias variable={v.key} />
         <AnilloDiario variable={v.key} />
       </div>

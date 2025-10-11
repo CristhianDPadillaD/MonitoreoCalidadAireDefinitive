@@ -15,8 +15,8 @@ export default function Navbar() {
 
       <div className="navBarLinks">
         <Link to="/" className="">Inicio</Link>
-        <Link to="/invitado" className="">Contaminantes</Link>
-        <Link to="/invitado" className="IniciarSesionButton">Iniciar sesión</Link>
+        <Link to="/variableDetail" className="">Contaminantes</Link>
+        <Link to="/iniciarSesion" className="IniciarSesionButton">Iniciar sesión</Link>
       </div>
     </nav>
   );

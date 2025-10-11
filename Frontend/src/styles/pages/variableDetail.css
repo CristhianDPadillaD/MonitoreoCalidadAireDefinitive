@@ -1,0 +1,71 @@
+.variableDetailContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.volverButton {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2563eb;
+  text-decoration: none;
+  padding: 0.25rem 0.75rem;
+}
+
+.volverButton:hover {
+  color: #1e3a8a;
+}
+
+
+.variableTitulo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.variableSubtitulo {
+  font-size: 1.1rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+.variablePromediosContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+}
+
+.variablePromediosContainer > div {
+  background-color: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.variablePromediosContainer h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* para responsive */
+@media (max-width: 768px) {
+  .variablePromediosContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .graficoTiempoReal {
+    height: 250px;
+  }
+}

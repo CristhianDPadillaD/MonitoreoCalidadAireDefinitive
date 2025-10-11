@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
 import Invitado from "./pages/Invitado"
 import { Routes, Route } from "react-router-dom"
+import VariableDetail from "./pages/VariableDetail"
 
 export default function App() {
   return (
@@ -10,7 +11,7 @@ export default function App() {
       <main className="p-6">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/invitado" element={<Invitado />} />
+          <Route path="/variableDetail" element={<VariableDetail />} />
         </Routes>
       </main>
     </div>
