@@ -26,7 +26,7 @@
 .graficaTermometroContainer{
     display: flex;
     justify-content: center;
-    gap: 4rem;
+    gap: 2rem;
     flex-wrap: wrap;
     margin-bottom: 3rem;;
 }
@@ -35,9 +35,11 @@
   background-color: #f9f9f9;
   border: 2px solid #ddd;
   border-radius: 20px;
-  padding: 1.5rem;
-  width: 250px;
+  padding: 2rem;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-width: 400px;
+ 
+  
 }
 
 .estadoCalidad {
@@ -50,13 +52,21 @@
     border-radius: 8px;
 }
 
+.termometroTitulo {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333333;
+    font-size: 1.2rem;
+    margin-bottom: 2rem;;
+}
+
 /*para editar por separado cada grafica de termometro*/
 .termometroCard.co {
-  border-color: #4caf50;
+  border-color: #b0c6d3;
 }
 
 .termometroCard.pm10 {
-  border-color: #2196f3;
+  border-color: #b0c6d3;
 }
 /*----------------------------------------------------*/
 

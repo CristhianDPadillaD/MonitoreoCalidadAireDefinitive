@@ -34,6 +34,7 @@ export default function Home() {
         <div className="graficaTermometroContainer">
           {VARIABLES.map(v => (
             <div key={v.key} className={`termometroCard ${v.key}`}>
+              <h3 className="termometroTitulo">{v.label}</h3>
               <Termometro
                 label={v.label}
                 value={Number(readings[v.key] ?? 0)}
