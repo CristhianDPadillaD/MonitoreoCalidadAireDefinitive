@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const datoSchema = new mongoose.Schema({
     timestamp: {
-        type: String, // Usamos String para que coincida con lo que envía el ESP32
+        type: String, 
         required: true
     },
     temperatura: Number,
@@ -14,7 +14,7 @@ const datoSchema = new mongoose.Schema({
     pm2_5: Number,
     pm10: Number
 }, {
-    timestamps: true, // Esto agrega automáticamente las fechas de creación/actualización
+    timestamps: true,
     versionKey: false
 });
 
