@@ -1,0 +1,94 @@
+.paginaVariablesContainer{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 60px;
+    box-sizing: border-box;
+}
+
+.titulo{
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+}
+
+.variableCardContainer{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+    justify-items: center;
+}
+
+.variableCard{
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    padding-right: 2rem;
+}
+
+.variableCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 20px rgba(80, 87, 85, 0.25);
+}
+
+.variableTitulo {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+  color: #000000;
+}
+
+.variableGraficoContainer {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.verDetalleButton{
+    border: none;
+    color: #ffffff;
+    background-color: #2865a1;
+    font-weight: bold;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.verDetalleButton:hover {
+  background-color: #459da3;
+  border: 1px solid #ffffff;
+  
+}
+
+
+
+/* Responsive  */
+@media (max-width: 1024px) {
+  .variableCardContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+}
+
+@media (max-width: 700px) {
+  .variableCardContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .paginaVariablesContainer {
+    padding: 30px 20px;
+  }
+}

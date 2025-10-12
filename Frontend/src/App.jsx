@@ -1,7 +1,9 @@
 import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
+
 import { Routes, Route } from "react-router-dom"
 import VariableDetail from "./pages/VariableDetail"
+import VariableSelect from "./pages/VariableSelect"
 
 export default function App() {
   return (
@@ -10,7 +12,7 @@ export default function App() {
       <main className="p-6">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/variableDetail" element={<VariableDetail />} />
+          <Route path="/variableSelect" element={<VariableSelect />} />
         </Routes>
       </main>
     </div>

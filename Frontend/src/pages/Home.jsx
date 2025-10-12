@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import Termometro from "../components/graficos/Termometro";
 import { VARIABLES } from "../config/variables";
 import "../styles/pages/home.css";
+import { useNavigate } from "react-router-dom"; 
 
 export default function Home() {
+  const navigate = useNavigate();
+
   const [readings, setReadings] = useState({
     co: 0,
     pm1: 0,
@@ -11,14 +14,14 @@ export default function Home() {
     pm10: 0,
   });
 
-  // Función para consultar la API
+  // funcion que consulta la api
   const obtenerUltimoDato = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/historial/ultimo");
       if (!res.ok) throw new Error("Error al obtener los datos");
       const data = await res.json();
 
-      // Actualizamos el estado con los valores recibidos
+      //actualizar datos
       setReadings({
         co: data.co,
         pm1: data.pm1,
@@ -30,15 +33,15 @@ export default function Home() {
     }
   };
 
-  // Llamar a la API al montar y cada 5 segundos
+  // llamar a la api cada 5 segundos
   useEffect(() => {
-    obtenerUltimoDato(); // primera llamada inmediata
+    obtenerUltimoDato(); 
 
     const intervalo = setInterval(() => {
       obtenerUltimoDato();
-    }, 5000); // 5 segundos
+    }, 5000); 
 
-    // limpiar intervalo al desmontar
+    
     return () => clearInterval(intervalo);
   }, []);
 
@@ -49,10 +52,11 @@ export default function Home() {
           Calidad del aire de la universidad Mariana
         </h2>
 
-        {/*  Aquí se renderizan los termómetros */}
+        {/*  termometros */}
         <div className="graficaTermometroContainer">
           {VARIABLES.map((v) => (
             <div key={v.key} className={`termometroCard ${v.key}`}>
+              
               <h3 className="termometroTitulo">{v.label}</h3>
               <Termometro
                 label={v.label}
@@ -69,12 +73,23 @@ export default function Home() {
 
         <div className="verMas">
           ¿Quieres ver más a detalle cómo se comporta la calidad del aire?
-          <button className="verMasButton">Conoce más</button>
+          <button
+            className="verMasButton"
+            onClick={() => navigate("/VariableSelect")} 
+          >
+            Conoce más
+          </button>
         </div>
       </div>
 
       <aside className="comoSeMideContainer">
         <h3 className="comoSeMideTitulo">¿Cómo se mide?</h3>
+        <h2 className="comoSeMideSubtitulo">
+          La calidad del aire se mide a través de sensores que detectan la
+          concentración de contaminantes en el aire, segun en el nivel donde 
+          se encuentren, han sido clasificadas en estos 6 colores para que 
+          puedas distinguir la calidad del aire de un vistazo.
+        </h2>
         <div className="comoSeMideContenido">
           <div className="flex items-center gap-3">
             <div className="medidasContainer" />
