@@ -8,9 +8,7 @@ import {
   getUltimasTemperaturas,
   getUltimasPresiones,
   getPromediosPorDia,
-  obtenerDiasPorVariable,
-  getDatosPorDia,
-  getCalidadAire
+  getPromedioUltimos7Dias
 } from '../controllers/historialController.js';
 
 const router = express.Router();
@@ -30,10 +28,6 @@ router.get('/ultimas/presiones', getUltimasPresiones);
 
 // Agregaciones
 router.get('/promedios-dia', getPromediosPorDia);
-router.get('/dias-variable', obtenerDiasPorVariable);
-router.get('/datos-dia', getDatosPorDia);
-
-// Categorías de calidad del aire
-router.get('/calidad', getCalidadAire);
+router.get('/promedio-semana', getPromedioUltimos7Dias);
 
 export default router;
