@@ -1,6 +1,7 @@
-- [x] Edit src/routes/historialRoutes.js: Remove imports for obtenerDiasPorVariable, getDatosPorDia, getCalidadAire
-- [x] Edit src/routes/historialRoutes.js: Remove the three routes: /dias-variable, /datos-dia, /calidad
-- [x] Edit src/routes/historialRoutes.js: Add import for getPromedioUltimos7Dias
-- [x] Edit src/routes/historialRoutes.js: Add new route: router.get('/promedio-ultimos-7-dias', getPromedioUltimos7Dias)
-- [x] Edit src/controllers/historialController.js: Remove functions obtenerDiasPorVariable, getDatosPorDia, getCalidadAire
-- [x] Edit src/controllers/historialController.js: Add new function getPromedioUltimos7Dias
+# TODO: Modificar método getPromediosPorDia
+
+## Tareas Pendientes
+
+- [x] Agregar el método `getPromedioDiaActual` en `src/controllers/historialController.js` que calcule el promedio de una variable (co, pm1, pm2.5, pm10) para el día actual, recibiendo solo la variable como parámetro en query (?variable=co).
+- [x] Eliminar el método `getPromediosPorDia` de `src/controllers/historialController.js`.
+- [x] Actualizar `src/routes/historialRoutes.js`: agregar import y ruta para `getPromedioDiaActual` (e.g., /promedio-dia-actual), y eliminar import y ruta de `getPromediosPorDia`.

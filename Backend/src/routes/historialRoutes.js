@@ -7,7 +7,7 @@ import {
   getUltimosPM10,
   getUltimasTemperaturas,
   getUltimasPresiones,
-  getPromediosPorDia,
+  getPromedioDiaActual,
   getPromedioUltimos7Dias
 } from '../controllers/historialController.js';
 
@@ -27,7 +27,7 @@ router.get('/ultimas/temperaturas', getUltimasTemperaturas);
 router.get('/ultimas/presiones', getUltimasPresiones);
 
 // Agregaciones
-router.get('/promedios-dia', getPromediosPorDia);
+router.get('/promedio-dia', getPromedioDiaActual);
 router.get('/promedio-semana', getPromedioUltimos7Dias);
 
 export default router;

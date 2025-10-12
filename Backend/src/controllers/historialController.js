@@ -161,13 +161,12 @@ export const getUltimasPresiones = async (req, res) => {
   }
 };
 
-export const getPromediosPorDia = async (req, res) => {
+export const getPromedioDiaActual = async (req, res) => {
   try {
-    const { variable, dias } = req.query;
-    if (!variable || !dias) {
-      return res.status(400).json({ error: 'Variable o días no proporcionados' });
+    const { variable } = req.query;
+    if (!variable) {
+      return res.status(400).json({ error: 'Variable no proporcionada' });
     }
-    const diasArray = dias.split(',');
     const fieldMap = {
       co: 'co',
       pm1: 'pm1',
@@ -177,33 +176,28 @@ export const getPromediosPorDia = async (req, res) => {
       presion: 'presion'
     };
     const campo = fieldMap[variable] || variable;
-    const diasCoincidentes = diasArray.map(d => ({ $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, d] } }));
+    const hoy = new Date().toISOString().split('T')[0];
     const canalizacionAgregacion = [
-      { $match: { $or: diasCoincidentes, [campo]: { $ne: null, $type: 'number' } } },
+      { $match: { $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, hoy] }, [campo]: { $ne: null, $type: 'number' } } },
       {
         $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          _id: null,
           suma: { $sum: `$${campo}` },
           cantidad: { $sum: 1 }
         }
       },
       {
         $project: {
-          dia: '$_id',
           promedio: { $divide: ['$suma', '$cantidad'] },
           _id: 0
         }
-      },
-      { $sort: { dia: 1 } }
+      }
     ];
-    const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
-    const resultado = diasArray.map(dia => {
-      const promedio = promediosCalculados.find(p => p.dia === dia);
-      return { dia, promedio: promedio ? parseFloat(promedio.promedio.toFixed(2)) : 0 };
-    });
-    res.json(resultado);
+    const resultadoAgregacion = await Dato.aggregate(canalizacionAgregacion);
+    const promedio = resultadoAgregacion.length > 0 ? parseFloat(resultadoAgregacion[0].promedio.toFixed(2)) : 0;
+    res.json({ dia: hoy, promedio });
   } catch (error) {
-    console.error('Error en promedio por día:', error);
+    console.error('Error en promedio día actual:', error);
     res.status(500).json({ error: 'Error al calcular promedio' });
   }
 };
