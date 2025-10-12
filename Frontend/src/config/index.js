@@ -1,3 +1,7 @@
+const cors = require("cors");
+app.use(cors());
+
+
 export const VARIABLES = [
   {
     key: "pm2_5",

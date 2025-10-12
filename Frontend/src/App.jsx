@@ -1,6 +1,5 @@
 import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
-import Invitado from "./pages/Invitado"
 import { Routes, Route } from "react-router-dom"
 import VariableDetail from "./pages/VariableDetail"
 

@@ -123,17 +123,8 @@
     color: #333;
 }
 
-.excelenteContainer {
-    background-color: #bcdce9;
-    color: black;
-    padding: 1rem;
-    border-radius: 5px;
-    text-align: center;
-    margin: 1rem;
-}
-
 .buenaContainer {
-    background-color: #d3f3d5;
+    background-color: #c3f5c3ff;
     color: black;
     padding: 1rem;
     border-radius: 5px;
@@ -141,8 +132,8 @@
     margin: 1rem;
 }
 
-.regularContainer {
-    background-color: #f1f3d3;
+.aceptableContainer {
+    background-color: #ecec93ff;
     color: black;
     padding: 1rem;
     border-radius: 5px;
@@ -150,8 +141,35 @@
     margin: 1rem;
 }
 
-.malaContainer {
-    background-color: #f3d3d3;
+.dañinaSensiblesContainer {
+    background-color: #e7c39f;
+    color: black;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem;
+}
+
+.dañinaContainer {
+    background-color: #eba8a8ff;
+    color: black;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem;
+}
+
+.muyDañinaContainer {
+    background-color: #e4afe9ff;
+    color: black;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: center;
+    margin: 1rem;
+}
+
+.peligrosaContainer {
+    background-color: #af9099;
     color: black;
     padding: 1rem;
     border-radius: 5px;

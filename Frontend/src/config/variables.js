@@ -1,22 +1,28 @@
 export const VARIABLES = [
   {
-    key: "co",
-    label: "Monóxido de carbono (CO)",
-    unit: "ppm",
-    min: 0,
-    max: 50,
-    thresholds: [10, 25, 40],
-    size: "large",
-    color: "#4caf50"
+    key: "pm2_5",
+    label: "PM 2.5 ",
+    unit: "µg/m³",
+    thresholds: [
+      { max: 12, color: "#c3f5c3ff", label: "Buena" },
+      { max: 37, color: "#ecec93ff", label: "Aceptable" },
+      { max: 55, color: "#e7c39f", label: "Dañina (sensibles)" },
+      { max: 150, color: "#eba8a8ff", label: "Dañina" },
+      { max: 250, color: "#e4afe9ff", label: "Muy dañina" },
+      { max: 500, color: "#af9099", label: "Peligrosa" },
+    ],
   },
   {
-    key: "pm10",
-    label: "Material particulado (PM)",
-    unit: "µg/m³",
-    min: 0,
-    max: 150,
-    thresholds: [50, 100, 150],
-    size: "medium",
-    color: "#2196f3"
-  }
+    key: "co",
+    label: "Monóxido de Carbono (CO)",
+    unit: "ppm",
+    thresholds: [
+      { max: 4.4, color: "#c3f5c3ff", label: "Buena" },
+      { max: 9.4, color: "#ecec93ff", label: "Aceptable" },
+      { max: 12.4, color: "#e7c39f", label: "Dañina (sensibles)" },
+      { max: 15.4, color: "#eba8a8ff", label: "Dañina" },
+      { max: 30.4, color: "#e4afe9ff", label: "Muy dañina" },
+      { max: 50, color: "#af9099", label: "Peligrosa" },
+    ],
+  },
 ];

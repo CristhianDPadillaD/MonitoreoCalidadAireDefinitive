@@ -1,38 +1,58 @@
 import React from "react";
 import "../../styles/components/termometro.css";
 
-export default function Termometro({ label, value, unit, min, max, thresholds, size = "medium", color = "#3498db" }) {
-  // Limitar valor al rango [min, max]
-  const clampedValue = Math.min(Math.max(value, min), max);
-  const porcentaje = ((clampedValue - min) / (max - min)) * 100;
+export default function Termometro({ label, value, unit, thresholds }) {
+  // Determinar umbral activo según el valor
+  const currentThreshold =
+    thresholds.find((t) => value <= t.max) || thresholds[thresholds.length - 1];
 
-  // Tamaño dinámico
-  const sizeStyles = {
-    small: { height: "150px", width: "40px" },
-    medium: { height: "200px", width: "50px" },
-    large: { height: "250px", width: "60px" }
-  };
+  // Calcular el porcentaje de llenado (0–100%)
+  const maxValue = thresholds[thresholds.length - 1].max;
+  const percent = Math.min(100, Math.max(0, (value / maxValue) * 100));
 
   return (
     <div className="termometroWrapper">
-      
-
       <div className="termometroContainer">
-        {/* Flecha que indica el nivel */}
-        <div className="termometroFlecha" style={{ bottom: `${porcentaje}%` }}>
-          ▲
-        </div>
-
         {/* Tubo del termómetro */}
         <div className="termometroTubo">
           <div
             className="termometroMercurio"
-            style={{ height: `${porcentaje}%` }}
+            style={{
+              height: `${percent}%`,
+              backgroundColor: currentThreshold.color,
+            }}
           />
+        </div>
+
+        {/* Flecha que marca el valor actual */}
+        <div
+          className="termometroFlecha"
+          style={{
+            bottom: `${percent}%`,
+            color: currentThreshold.color,
+          }}
+        >
+          ▲
         </div>
       </div>
 
-      <p className="termometroValor">{value} {unit}</p>
+      {/* Valor numérico */}
+      <p className="termometroValor">
+        {value?.toFixed(1)} {unit}
+      </p>
+
+      {/* Nivel de calidad (Buena, Aceptable, etc.) */}
+      <p
+        className="termometroLabel"
+        style={{
+          backgroundColor: currentThreshold.color, // el fondo cambia
+          color: "#000000", // texto siempre negro
+          fontWeight: "bold",
+        }}
+      >
+        {currentThreshold.label}
+      </p>
+
     </div>
   );
 }
