@@ -176,7 +176,7 @@ export const getPromedioDiaActual = async (req, res) => {
       presion: 'presion'
     };
     const campo = fieldMap[variable] || variable;
-    const hoy = new Date().toISOString().split('T')[0];
+    const hoy = new Date().toLocaleDateString('sv-SE');
     const canalizacionAgregacion = [
       { $match: { $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, hoy] }, [campo]: { $ne: null, $type: 'number' } } },
       {
