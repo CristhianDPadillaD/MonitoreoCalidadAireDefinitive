@@ -7,7 +7,10 @@ export default function Histograma10Dias({ data }) {
   return (
     <div style={{ width: "100%", height: 300 }}>
       <h3>Promedio semanal</h3>
-      <ResponsiveContainer width="100%" height="100%">
+      <h4 className="subtituloPromedioSemana">Mira cuales han sido los 
+        promedios de este factor contaminante durante la ultima semana.
+      </h4>
+      <ResponsiveContainer width="100%" height="100%" className="histogramaSemana">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="diaSemana" />

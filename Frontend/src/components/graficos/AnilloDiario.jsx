@@ -1,5 +1,6 @@
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import "../../styles/components/anilloDiario.css"
 
 export default function AnilloDiario({ data, variable }) {
   console.log("📊 Data recibida en AnilloDiario:", data, "Variable:", variable);
@@ -13,15 +14,17 @@ export default function AnilloDiario({ data, variable }) {
   const obtenerMaximo = (variable) => {
     switch (variable) {
       case "pm1":
+        return 50; 
       case "pm25":
+        return 37; 
       case "pm10":
-        return 100; // µg/m³
+        return 75; 
       case "co":
-        return 10; // ppm
+        return 30; 
       case "temperatura":
-        return 50; // °C
+        return 35; 
       case "presion":
-        return 1100; // hPa
+        return 1100; 
       default:
         return 100;
     }
@@ -41,6 +44,9 @@ export default function AnilloDiario({ data, variable }) {
   return (
     <div className="anilloContainer">
       <h3>Promedio diario</h3>
+      <h4 className="subtituloPromedio">En esta grafica veras que tan cerca esta cada variable de llegar
+        a su limite diario permitido segun la resolucion 2254 de 2017.
+      </h4>
       <ResponsiveContainer width="100%" height={250}>
         <PieChart>
           <Pie
@@ -57,7 +63,6 @@ export default function AnilloDiario({ data, variable }) {
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
-          <Tooltip />
           <Legend />
         </PieChart>
       </ResponsiveContainer>

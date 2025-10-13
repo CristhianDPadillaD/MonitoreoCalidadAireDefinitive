@@ -12,7 +12,6 @@
   font-weight: 500;
   color: #2563eb;
   text-decoration: none;
-  padding: 0.25rem 0.75rem;
 }
 
 .volverButton:hover {
@@ -21,14 +20,14 @@
 
 .variableDetailTitulo {
   color: #0b1722;
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: bold;
 }
 
 .variableSubtitulo {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #6b7280;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .variablePromediosContainer {
@@ -48,6 +47,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 400px;
 }
 
 .variablePromediosContainer h3 {
@@ -56,6 +56,7 @@
   color: #374151;
   margin-bottom: 1rem;
   text-align: center;
+  min-height: auto;
 }
 
 /* para responsive */

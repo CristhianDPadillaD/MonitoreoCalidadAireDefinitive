@@ -9,7 +9,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <main className="p-6">
+      <main className="p-6" style={{ paddingTop: '5rem' }}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/variableSelect" element={<VariableSelect />} />
