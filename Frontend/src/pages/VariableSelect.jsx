@@ -14,7 +14,7 @@ const VariableSelect = () => {
     presion: [],
   });
 
-  const colorGlobal = "#47a2b9ff"; 
+  const colorGlobal = "#47a2b9ff";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,8 +66,8 @@ const VariableSelect = () => {
               <SimpleAreaChart data={data[key]} color={colorGlobal} />
             </div>
             <button
-              onClick={() => navigate(`/variable/${key}`)}
               className="verDetalleButton"
+              onClick={() => navigate(`/variable/${key}`)}
             >
               Ver a detalle
             </button>
@@ -77,6 +77,5 @@ const VariableSelect = () => {
     </div>
   );
 };
-
 
 export default VariableSelect;

@@ -19,11 +19,10 @@
   color: #1e3a8a;
 }
 
-
-.variableTitulo {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+.variableDetailTitulo {
+  color: #0b1722;
+  font-size: 3rem;
+  font-weight: bold;
 }
 
 .variableSubtitulo {

@@ -13,6 +13,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/variableSelect" element={<VariableSelect />} />
+          <Route path="/variable/:key" element={<VariableDetail />} />
         </Routes>
       </main>
     </div>

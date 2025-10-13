@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-import { fetchAverages } from "../../services/api";
+import React from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
 
-export default function Histogram10Days({ variable }) {
-  const [data, setData] = useState([]);
-  useEffect(()=> {
-    fetchAverages(variable, 10).then(setData).catch(()=>setData([]));
-  }, [variable]);
+export default function Histograma10Dias({ data }) {
+  if (!data || data.length === 0) return <p>Cargando histograma...</p>;
+
   return (
-    <div className="bg-white p-4 rounded-lg shadow h-48">
-      <h4 className="mb-2 text-sm font-medium">Promedio últimos 10 días</h4>
-      <ResponsiveContainer width="100%" height="80%">
+    <div style={{ width: "100%", height: 300 }}>
+      <h3>Promedio semanal</h3>
+      <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tick={{fontSize:10}} />
+          <XAxis dataKey="diaSemana" />
           <YAxis />
           <Tooltip />
-          <Bar dataKey="avg" barSize={14} />
+          <Bar dataKey="promedio" fill="#3b82f6" />
         </BarChart>
       </ResponsiveContainer>
     </div>

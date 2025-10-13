@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Termometro from "../components/graficos/Termometro";
-import { VARIABLES } from "../config/variables";
+import { VARIABLES } from "../config/variablesHome";
 import "../styles/pages/home.css";
 import { useNavigate } from "react-router-dom"; 
 
