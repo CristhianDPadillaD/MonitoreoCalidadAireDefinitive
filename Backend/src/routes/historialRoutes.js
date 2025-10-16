@@ -8,7 +8,8 @@ import {
   getUltimasTemperaturas,
   getUltimasPresiones,
   getPromedioDiaActual,
-  getPromedioUltimos7Dias
+  getPromedioUltimos7Dias,
+  getPromedioMensual
 } from '../controllers/historialController.js';
 
 const router = express.Router();
@@ -29,5 +30,6 @@ router.get('/ultimas/presiones', getUltimasPresiones);
 // Agregaciones
 router.get('/promedio-dia', getPromedioDiaActual);
 router.get('/promedio-semana', getPromedioUltimos7Dias);
+router.get('/promedio-mes', getPromedioMensual);
 
 export default router;

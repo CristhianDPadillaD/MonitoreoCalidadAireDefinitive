@@ -250,6 +250,55 @@ export const getPromedioUltimos7Dias = async (req, res) => {
   }
 };
 
+export const getPromedioMensual = async (req, res) => {
+  try {
+    const { variable, mes } = req.query;
+    if (!variable || !mes) {
+      return res.status(400).json({ error: 'Variable y mes no proporcionados' });
+    }
+    const fieldMap = {
+      co: 'co',
+      pm1: 'pm1',
+      pm25: 'pm2_5',
+      pm10: 'pm10',
+      temperatura: 'temperatura',
+      presion: 'presion'
+    };
+    const campo = fieldMap[variable] || variable;
+    const [year, month] = mes.split('-').map(Number);
+    const fechaInicio = new Date(year, month - 1, 1);
+    const fechaFin = new Date(year, month, 1);
+    const canalizacionAgregacion = [
+      { $match: { createdAt: { $gte: fechaInicio, $lt: fechaFin }, [campo]: { $ne: null, $type: 'number' } } },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          suma: { $sum: `$${campo}` },
+          cantidad: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          dia: '$_id',
+          promedio: { $divide: ['$suma', '$cantidad'] },
+          _id: 0
+        }
+      },
+      { $sort: { dia: 1 } }
+    ];
+    const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
+    const resultado = promediosCalculados.map(p => ({
+      dia: p.dia,
+      diaSemana: new Date(p.dia).toLocaleDateString('es-ES', { weekday: 'long' }),
+      promedio: parseFloat(p.promedio.toFixed(2))
+    }));
+    res.json(resultado);
+  } catch (error) {
+    console.error('Error en promedio mensual:', error);
+    res.status(500).json({ error: 'Error al calcular promedio mensual' });
+  }
+};
+
 
 
 
