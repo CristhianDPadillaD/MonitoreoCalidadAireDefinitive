@@ -14,7 +14,7 @@ export const getUltimoDato = async (req, res) => {
     const horas = parseInt(req.query.hours) || 24;
     const registros = await obtenerRecientes(horas, 1);
     if (!registros || registros.length === 0) {
-      return res.status(404).json({ error: 'No se encontró historial' });
+      return res.status(404).json({ error: 'No hay datos recientes disponibles' });
     }
     const ultimoDato = registros[0];
     const createdAt = ultimoDato.createdAt;
@@ -50,6 +50,9 @@ export const getUltimosCO = async (req, res) => {
       .filter(v => typeof v === 'number' && v !== null && !isNaN(v))
       .slice(0, cantidad)
       .reverse();
+    if (valoresCo.length === 0) {
+      return res.status(404).json({ error: 'No hay datos registrados para esta variable' });
+    }
     res.json({ co: valoresCo });
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener CO' });
@@ -71,6 +74,9 @@ export const getUltimosPM1 = async (req, res) => {
       .filter(v => typeof v === 'number' && v !== null && !isNaN(v))
       .slice(0, cantidad)
       .reverse();
+    if (valoresPm1.length === 0) {
+      return res.status(404).json({ error: 'No hay datos registrados para esta variable' });
+    }
     res.json({ pm1: valoresPm1 });
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener PM1' });
@@ -92,6 +98,9 @@ export const getUltimosPM25 = async (req, res) => {
       .filter(v => typeof v === 'number' && v !== null && !isNaN(v))
       .slice(0, cantidad)
       .reverse();
+    if (valoresPm25.length === 0) {
+      return res.status(404).json({ error: 'No hay datos registrados para esta variable' });
+    }
     res.json({ pm25: valoresPm25 });
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener PM2.5' });
@@ -113,6 +122,9 @@ export const getUltimosPM10 = async (req, res) => {
       .filter(v => typeof v === 'number' && v !== null && !isNaN(v))
       .slice(0, cantidad)
       .reverse();
+    if (valoresPm10.length === 0) {
+      return res.status(404).json({ error: 'No hay datos registrados para esta variable' });
+    }
     res.json({ pm10: valoresPm10 });
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener PM10' });
@@ -194,7 +206,10 @@ export const getPromedioDiaActual = async (req, res) => {
       }
     ];
     const resultadoAgregacion = await Dato.aggregate(canalizacionAgregacion);
-    const promedio = resultadoAgregacion.length > 0 ? parseFloat(resultadoAgregacion[0].promedio.toFixed(2)) : 0;
+    if (resultadoAgregacion.length === 0) {
+      return res.status(404).json({ error: 'No hay datos disponibles para el día actual' });
+    }
+    const promedio = parseFloat(resultadoAgregacion[0].promedio.toFixed(2));
     res.json({ dia: hoy, promedio });
   } catch (error) {
     console.error('Error en promedio día actual:', error);
@@ -238,6 +253,9 @@ export const getPromedioUltimos7Dias = async (req, res) => {
       { $limit: 7 }
     ];
     const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
+    if (promediosCalculados.length === 0) {
+      return res.status(404).json({ error: 'No hay datos disponibles para los últimos 7 días' });
+    }
     const resultado = promediosCalculados.map(p => ({
       dia: p.dia,
       diaSemana: new Date(p.dia).toLocaleDateString('es-ES', { weekday: 'short' }).replace('.', '').charAt(0).toUpperCase() + new Date(p.dia).toLocaleDateString('es-ES', { weekday: 'short' }).replace('.', '').slice(1),
@@ -287,6 +305,9 @@ export const getPromedioMensual = async (req, res) => {
       { $sort: { dia: 1 } }
     ];
     const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
+    if (promediosCalculados.length === 0) {
+      return res.status(404).json({ error: 'No hay datos disponibles para el mes especificado' });
+    }
     const resultado = promediosCalculados.map(p => ({
       dia: p.dia,
       diaSemana: new Date(p.dia).toLocaleDateString('es-ES', { weekday: 'long' }),
