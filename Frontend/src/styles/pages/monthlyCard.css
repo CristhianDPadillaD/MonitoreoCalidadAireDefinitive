@@ -1,0 +1,271 @@
+.monthlyContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px 70px;
+    box-sizing: border-box;
+    margin: 20px;
+}
+
+.monthlyHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 1.3rem;
+    margin: 20px 0;
+}
+
+.monthlySubtitulo {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    margin-left: 15px;
+}
+
+/* --- botones seleccionar --- */
+.selectsContainer {
+    margin: 10px 0 25px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.selectsContainer select {
+    padding: 6px 10px;
+    font-size: 0.95rem;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.selectsContainer select:hover {
+    border: 1px solid #304a9e;
+}
+
+/* --- matriz principal container--- */
+.monthlyMatriz {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 60px;
+    width: 100%;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 90px);
+    grid-auto-rows: 60px;
+    gap: 20px;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+}
+
+.color-cell {
+    position: relative;
+    width: 90px;
+    height: 60px;
+    border-radius: 6px;
+    border: 1px dashed #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease;
+}
+
+.color-cell:hover {
+    transform: scale(1.05);
+}
+
+.cell-day {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* --- que significa explicacion --- */
+.queSignificaContainer {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 40px 50px;
+    width: 500px;
+    margin-left: 70px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.queSignificaContainer h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.queSignificaContainer ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.queSignificaContainer li {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    color: #333;
+    gap: 15px;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    border: 1px dashed #777;
+}
+
+/* --- mensajes --- */
+.monthly-error {
+    background-color: #e69a9a;
+    color: #4b0c0c;
+    font-weight: 500;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    max-width: 320px;
+    margin-left: 10px;
+}
+
+/* --- boton volver --- */
+.volver {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.volver:hover {
+    color: #1e3a8a;
+}
+
+/* Responsive */
+
+/* Tablets medianas (≤1024px) */
+@media (max-width: 1024px) {
+    .monthlyContainer {
+        padding: 20px 40px;
+    }
+
+    .monthlyMatriz {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .color-grid {
+        grid-template-columns: repeat(7, 70px);
+        grid-auto-rows: 50px;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .queSignificaContainer {
+        width: 100%;
+        margin-left: 0;
+        padding: 25px 30px;
+    }
+
+    .queSignificaContainer h2 {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .queSignificaContainer li {
+        font-size: 1rem;
+    }
+}
+
+/* Pantallas pequeñas (≤768px) */
+@media (max-width: 768px) {
+    .monthlyContainer {
+        padding: 15px 25px;
+        margin: 10px;
+    }
+
+    .monthlyHeader h1 {
+        font-size: 1.2rem;
+    }
+
+    .monthlySubtitulo {
+        font-size: 1rem;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .selectsContainer {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .color-grid {
+        grid-template-columns: repeat(5, 60px);
+        grid-auto-rows: 50px;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .color-cell {
+        width: 60px;
+        height: 50px;
+    }
+
+    .queSignificaContainer {
+        padding: 20px;
+    }
+}
+
+/* Celulares pequeños (≤480px) */
+@media (max-width: 480px) {
+    .monthlyContainer {
+        padding: 10px 15px;
+    }
+
+    .monthlyHeader {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .monthlyMatriz {
+        gap: 20px;
+    }
+
+    .color-grid {
+        grid-template-columns: repeat(4, 55px);
+        grid-auto-rows: 45px;
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .color-cell {
+        width: 55px;
+        height: 45px;
+    }
+
+    .queSignificaContainer {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .legend-color {
+        width: 25px;
+        height: 25px;
+    }
+
+    .queSignificaContainer li {
+        font-size: 0.9rem;
+        gap: 10px;
+    }
+}

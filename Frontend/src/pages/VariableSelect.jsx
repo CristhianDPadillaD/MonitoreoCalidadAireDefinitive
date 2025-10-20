@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import SimpleAreaChart from "../components/graficos/SimpleAreaChart";
 import { useNavigate } from "react-router-dom";
 import "../styles/pages/variableSelect.css";
@@ -55,26 +56,29 @@ const VariableSelect = () => {
   ];
 
   return (
-    <div className="paginaVariablesContainer">
-      <h1 className="titulo">Conoce las variables que afectan la calidad del aire</h1>
+    <div>
+      <div className="paginaVariablesContainer">
+        <h1 className="titulo">Conoce las variables que afectan la calidad del aire</h1>
 
-      <div className="variableCardContainer">
-        {variables.map(({ key, label }) => (
-          <div key={key} className="variableCard">
-            <h2 className="variableTitulo">{label}</h2>
-            <div className="variableGraficoContainer">
-              <SimpleAreaChart data={data[key]} color={colorGlobal} />
+        <div className="variableCardContainer">
+          {variables.map(({ key, label }) => (
+            <div key={key} className="variableCard">
+              <h2 className="variableTitulo">{label}</h2>
+              <div className="variableGraficoContainer">
+                <SimpleAreaChart data={data[key]} color={colorGlobal} />
+              </div>
+              <button
+                className="verDetalleButton"
+                onClick={() => navigate(`/variable/${key}`)}
+              >
+                Ver a detalle
+              </button>
             </div>
-            <button
-              className="verDetalleButton"
-              onClick={() => navigate(`/variable/${key}`)}
-            >
-              Ver a detalle
-            </button>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
+
   );
 };
 

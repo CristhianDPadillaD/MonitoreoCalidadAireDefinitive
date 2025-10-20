@@ -8,8 +8,8 @@ export const VARIABLES = [
       { max: 37, color: "#ecec93ff", label: "Aceptable" },
       { max: 55, color: "#e7c39f", label: "Dañina (sensibles)" },
       { max: 150, color: "#eba8a8ff", label: "Dañina" },
-      { max: 250, color: "#e4afe9ff", label: "Muy dañina" },
-      { max: 500, color: "#af9099", label: "Peligrosa" },
+      { max: 250, color: "#d4afe9", label: "Muy dañina" },
+      { max: 500, color: "#aa9d90", label: "Peligrosa" },
     ],
   },
   {
@@ -21,8 +21,8 @@ export const VARIABLES = [
       { max: 9.4, color: "#ecec93ff", label: "Aceptable" },
       { max: 12.4, color: "#e7c39f", label: "Dañina (sensibles)" },
       { max: 15.4, color: "#eba8a8ff", label: "Dañina" },
-      { max: 30.4, color: "#e4afe9ff", label: "Muy dañina" },
-      { max: 50, color: "#af9099", label: "Peligrosa" },
+      { max: 30.4, color: "#d4afe9", label: "Muy dañina" },
+      { max: 50, color: "#aa9d90", label: "Peligrosa" },
     ],
   },
 ];
