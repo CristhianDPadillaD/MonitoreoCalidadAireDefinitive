@@ -91,14 +91,14 @@
     border: 1px solid #ccc;
     border-radius: 12px;
     padding: 40px 50px;
-    width: 500px;
+    width: 510px;
     margin-left: 70px;
     background-color: #fff;
     box-sizing: border-box;
 }
 
 .queSignificaContainer h2 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 30px;
 }

@@ -1,9 +1,10 @@
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import nivelesPorVariable from "../../config/nivelesPorVariable";
 import "../../styles/components/anilloDiario.css"
 
 export default function AnilloDiario({ data, variable }) {
-  console.log("📊 Data recibida en AnilloDiario:", data, "Variable:", variable);
+  console.log("data recibida en AnilloDiario:", data, "Variable:", variable);
 
   if (!data || data.promedio === undefined) {
     return <p>Cargando datos del día...</p>;
@@ -11,20 +12,29 @@ export default function AnilloDiario({ data, variable }) {
 
   const valor = data.promedio;
 
+  // obtener los niveles correspondientes a la variable actual
+  const niveles = nivelesPorVariable[variable] || [];
+
+  // buscar el color según el rango
+  const nivel = niveles.find(
+    (n) => valor >= n.rango[0] && valor <= n.rango[1]
+  );
+  const colorVariable = nivel ? nivel.color : "#47a2b9";
+
   const obtenerMaximo = (variable) => {
     switch (variable) {
       case "pm1":
-        return 50; 
-      case "pm25":
-        return 37; 
+        return 50;
+      case "pm2_5":
+        return 250;
       case "pm10":
-        return 75; 
+        return 500;
       case "co":
-        return 30; 
+        return 30;
       case "temperatura":
-        return 35; 
+        return 40;
       case "presion":
-        return 1100; 
+        return 1100;
       default:
         return 100;
     }
@@ -39,14 +49,16 @@ export default function AnilloDiario({ data, variable }) {
     { name: "Restante", value: restante },
   ];
 
-  const COLORS = ["#47a2b9ff", "#e0e0e0"];
+  const COLORS = [colorVariable, "#e0e0e0"];
 
   return (
     <div className="anilloContainer">
       <h3>Promedio diario</h3>
-      <h4 className="subtituloPromedio">En esta grafica veras que tan cerca esta cada variable de llegar
-        a su limite diario permitido segun la resolucion 2254 de 2017.
+      <h4 className="subtituloPromedio">
+        Este anillo muestra qué tan cerca está el promedio diario de alcanzar su
+        límite según la Resolución 2254 de 2017.
       </h4>
+
       <ResponsiveContainer width="100%" height={250}>
         <PieChart>
           <Pie
@@ -66,9 +78,12 @@ export default function AnilloDiario({ data, variable }) {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
-      <p className="valorPromedio">
-        <strong>{valor.toFixed(2)}</strong> promedio
-      </p>
+
+      {nivel && (
+        <p className="nivelEtiqueta">
+          Nivel: <strong>{nivel.label}</strong>
+        </p>
+      )}
     </div>
   );
 }
