@@ -9,7 +9,8 @@ import {
   getUltimasPresiones,
   getPromedioDiaActual,
   getPromedioUltimos7Dias,
-  getPromedioMensual
+  getPromedioMensual,
+  getDatosCrudosDia
 } from '../controllers/historialController.js';
 
 const router = express.Router();
@@ -31,5 +32,8 @@ router.get('/ultimas/presiones', getUltimasPresiones);
 router.get('/promedio-dia', getPromedioDiaActual);
 router.get('/promedio-semana', getPromedioUltimos7Dias);
 router.get('/promedio-mes', getPromedioMensual);
+
+// Descarga de datos crudos
+router.get('/descargar-csv', getDatosCrudosDia);
 
 export default router;

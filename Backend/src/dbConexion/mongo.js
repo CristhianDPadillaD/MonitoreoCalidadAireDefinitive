@@ -13,7 +13,7 @@ const conectarDB = async () => {
       serverSelectionTimeoutMS: 5000, // Reintento de selección de servidor
       family: 4 // Usar IPv4
     });
-    console.log("✅ Conectado a MongoDB Atlas");
+    console.log(" Conectado a MongoDB Atlas");
   } catch (error) {
     console.error("Error al conectar con MongoDB:", error.message);
     process.exit(1);

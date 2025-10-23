@@ -1,4 +1,5 @@
 import Dato from '../models/dataModel.js';
+import { Parser } from 'json2csv';
 
 const obtenerRecientes = async (horas = 24, limite = 100) => {
   const fechaDesde = new Date(Date.now() - horas * 60 * 60 * 1000);
@@ -317,6 +318,62 @@ export const getPromedioMensual = async (req, res) => {
   } catch (error) {
     console.error('Error en promedio mensual:', error);
     res.status(500).json({ error: 'Error al calcular promedio mensual' });
+  }
+};
+
+export const getDatosCrudosDia = async (req, res) => {
+  try {
+    const { fecha } = req.query;
+    if (!fecha) {
+      return res.status(400).json({ error: 'Fecha no proporcionada. Use el formato YYYY-MM-DD' });
+    }
+
+    // Validar formato de fecha
+    const fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!fechaRegex.test(fecha)) {
+      return res.status(400).json({ error: 'Formato de fecha inválido. Use YYYY-MM-DD' });
+    }
+
+    // Obtener datos del día específico
+    const fechaInicio = new Date(fecha + 'T00:00:00.000Z');
+    const fechaFin = new Date(fecha + 'T23:59:59.999Z');
+
+    const datos = await Dato.find({
+      createdAt: { $gte: fechaInicio, $lte: fechaFin }
+    }).sort({ createdAt: 1 }).lean();
+
+    if (datos.length === 0) {
+      return res.status(404).json({ error: 'No hay datos disponibles para la fecha seleccionada' });
+    }
+
+    // Preparar datos para CSV (solo variables crudas recolectadas)
+    const datosParaCsv = datos.map(dato => ({
+      timestamp: dato.timestamp,
+      temperatura: dato.temperatura,
+      humedad: dato.humedad,
+      presion: dato.presion,
+      temp_lp: dato.temp_lp,
+      co: dato.co,
+      pm1: dato.pm1,
+      pm2_5: dato.pm2_5,
+      pm10: dato.pm10
+    }));
+
+    // Convertir a CSV
+    const parser = new Parser();
+    const csv = parser.parse(datosParaCsv);
+
+    // Configurar headers para descarga
+    const nombreArchivo = `datos_crudo_${fecha}.csv`;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
+
+    // Enviar CSV
+    res.send(csv);
+
+  } catch (error) {
+    console.error('Error al descargar datos crudos:', error);
+    res.status(500).json({ error: 'Error al procesar la solicitud de descarga' });
   }
 };
 
