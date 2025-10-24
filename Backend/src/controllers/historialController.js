@@ -208,7 +208,7 @@ export const getPromedioDiaActual = async (req, res) => {
     ];
     const resultadoAgregacion = await Dato.aggregate(canalizacionAgregacion);
     if (resultadoAgregacion.length === 0) {
-      return res.status(404).json({ error: 'No hay datos disponibles para el día actual' });
+      return res.json({ dia: hoy, promedio: null });
     }
     const promedio = parseFloat(resultadoAgregacion[0].promedio.toFixed(2));
     res.json({ dia: hoy, promedio });
@@ -255,7 +255,7 @@ export const getPromedioUltimos7Dias = async (req, res) => {
     ];
     const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
     if (promediosCalculados.length === 0) {
-      return res.status(404).json({ error: 'No hay datos disponibles para los últimos 7 días' });
+      return res.json([]);
     }
     const resultado = promediosCalculados.map(p => ({
       dia: p.dia,
@@ -307,7 +307,7 @@ export const getPromedioMensual = async (req, res) => {
     ];
     const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
     if (promediosCalculados.length === 0) {
-      return res.status(404).json({ error: 'No hay datos disponibles para el mes especificado' });
+      return res.json([]);
     }
     const resultado = promediosCalculados.map(p => ({
       dia: p.dia,

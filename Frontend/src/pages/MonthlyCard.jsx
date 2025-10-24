@@ -52,7 +52,15 @@ export default function MonthlyCard() {
           `http://localhost:3000/api/historial/promedio-mes?variable=${variable}&mes=${mesStr}`
         );
 
-        if (!res.ok) throw new Error("Error al obtener los datos");
+        if (!res.ok) {
+          if (res.status === 404) {
+            // No data available, set empty matrix
+            setDatos(Array.from({ length: diasEnMes }, () => null));
+            return;
+          } else {
+            throw new Error("Error al obtener los datos");
+          }
+        }
 
         const data = await res.json();
 

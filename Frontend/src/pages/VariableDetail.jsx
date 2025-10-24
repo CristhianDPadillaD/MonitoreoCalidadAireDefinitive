@@ -29,7 +29,7 @@ export default function VariableDetail() {
           `http://localhost:3000/api/historial/promedio-semana?variable=${v.key}`
         );
         const semanaJson = await resSemana.json();
-        setDataSemana(semanaJson);
+        setDataSemana(Array.isArray(semanaJson) ? semanaJson : []);
 
         const resDia = await fetch(
           `http://localhost:3000/api/historial/promedio-dia?variable=${v.key}`
@@ -38,6 +38,10 @@ export default function VariableDetail() {
         setDataDia(diaJson);
       } catch (error) {
         console.error("Error cargando los datos:", error);
+        // Set default empty states on error
+        setDataLive([]);
+        setDataSemana([]);
+        setDataDia(null);
       }
     };
 

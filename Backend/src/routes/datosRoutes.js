@@ -6,3 +6,4 @@ const router = express.Router();
 router.post("/datos", guardarDato);
 
 export default router;
+
