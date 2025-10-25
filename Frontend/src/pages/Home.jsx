@@ -49,7 +49,7 @@ export default function Home() {
     <div className="containerGeneral">
       <div className="calidadAireContainer">
         <h2 className="calidadAireTitulo">
-          Calidad del aire de la universidad Mariana
+          CALIDAD DE AIRE DE LA UNIVERSIDAD MARIANA
         </h2>
 
         {/*  termometros */}

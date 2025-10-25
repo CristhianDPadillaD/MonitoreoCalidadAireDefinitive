@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom"
 import VariableDetail from "./pages/VariableDetail"
 import VariableSelect from "./pages/VariableSelect"
 import MonthlyCard from "./pages/MonthlyCard"
+import DataDownload from "./pages/DataDownload"
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/variableSelect" element={<VariableSelect />} />
           <Route path="/variable/:key" element={<VariableDetail />} />
           <Route path="/monthlyCard" element={<MonthlyCard />} />
+          <Route path="/dataDownload" element={<DataDownload />} />
         </Routes>
       </main>
     </div>

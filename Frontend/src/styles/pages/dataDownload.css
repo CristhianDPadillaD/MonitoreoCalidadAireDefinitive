@@ -1,0 +1,105 @@
+.dataDownloadContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  font-family: Arial, sans-serif;
+}
+
+.volverContainer {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 10px;
+}
+
+.btnVolver{
+    border: none;
+    color: #1d4ed8;
+    font-size: 16px;
+    margin-top: 2rem;
+    margin-left: 3rem;
+    cursor: pointer;
+}
+
+.btnVolver:hover {
+    text-decoration: underline;
+}
+
+.tituloPrincipal{
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.contenidoPrincipal{
+    border-radius: 12px;
+    border: 1px solid #c0baba;
+    padding: 30px;
+    width: 100%;
+    max-width: 860px;
+}
+
+.descripcion{
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.fechaSection{
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.etiqueta{
+    display: block;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 25px;
+}
+
+.fechaSelectores{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.selectFecha{
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.btnDescargar{
+    display: block;
+    margin: 0 auto;
+    padding: 15px 40px;
+    background-color: #2865a1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btnDescargar:hover {
+    background-color: #1b4e7a;
+}
+
+.mensajeError {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    transition: opacity 0.3s ease;
+    margin-bottom: 2rem;
+    margin-left: 7rem;
+    margin-right: 7rem;
+    color: #a94442;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+

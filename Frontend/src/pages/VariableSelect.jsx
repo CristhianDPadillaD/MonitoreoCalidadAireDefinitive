@@ -58,7 +58,7 @@ const VariableSelect = () => {
   return (
     <div>
       <div className="paginaVariablesContainer">
-        <h1 className="titulo">Conoce las variables que afectan la calidad del aire</h1>
+        <h1 className="titulo">CONOCE LAS VARIABLES QUE AFECTAN LA CALIDAD DEL AIRE</h1>
 
         <div className="variableCardContainer">
           {variables.map(({ key, label }) => (
