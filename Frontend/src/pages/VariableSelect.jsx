@@ -38,13 +38,19 @@ const VariableSelect = () => {
         );
 
         setData(Object.fromEntries(responses));
+        console.log("Datos actualizados:", new Date().toLocaleTimeString());
       } catch (error) {
         console.error("Error cargando los datos:", error);
       }
     };
 
     fetchData();
+
+    const interval = setInterval(fetchData, 5000); // actualizar cada 5 segundos
+
+    return () => clearInterval(interval);
   }, []);
+
 
   const variables = [
     { key: "pm1", label: "PM1" },

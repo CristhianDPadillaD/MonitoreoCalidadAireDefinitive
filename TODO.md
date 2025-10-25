@@ -1,0 +1,3 @@
+- [x] Corregir inconsistencia en la clave de pm2.5 en nivelesPorVariable.js y importanciasPorVariable.js
+- [x] Actualizar la clave de pm2.5 en variablesAll.js para que coincida con el backend
+- [x] Verificar que la tabla se llene correctamente después de los cambios

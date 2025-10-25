@@ -7,7 +7,7 @@ const nivelesPorVariable = {
     { color: "#d4afe9", label: "Muy dañina", rango: [25, 40] },
     { color: "#aa9d90", label: "Peligrosa", rango: [40, 9999] },
   ],
-  "pm2_5": [
+  pm25: [
     { color: "#c3f5c3", label: "Buena", rango: [0, 12] },
     { color: "#ecec93", label: "Aceptable", rango: [12, 35.4] },
     { color: "#e7c39f", label: "Dañina para grupos sensibles", rango: [35.5, 55.4] },

@@ -4,6 +4,8 @@ import SimpleAreaChart from "../components/graficos/SimpleAreaChart";
 import Histograma10Dias from "../components/graficos/Histograma7Dias";
 import AnilloDiario from "../components/graficos/AnilloDiario";
 import { VARIABLES_ALL } from "../config/variablesAll";
+import nivelesPorVariable from "../config/nivelesPorVariable";
+import importanciasPorVariable from "../config/importanciasPorVariable";
 import "../styles/pages/variableDetail.css";
 
 export default function VariableDetail() {
@@ -17,9 +19,12 @@ export default function VariableDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const endpointLive = (v.key === 'temperatura' || v.key === 'presion')
-          ? `http://localhost:3000/api/historial/ultimas/${v.key === 'temperatura' ? 'temperaturas' : 'presiones'}`
-          : `http://localhost:3000/api/historial/ultimos/${v.key}`;
+        const endpointLive =
+          v.key === "temperatura" || v.key === "presion"
+            ? `http://localhost:3000/api/historial/ultimas/${
+                v.key === "temperatura" ? "temperaturas" : "presiones"
+              }`
+            : `http://localhost:3000/api/historial/ultimos/${v.key}`;
 
         const resLive = await fetch(endpointLive);
         const jsonLive = await resLive.json();
@@ -38,7 +43,6 @@ export default function VariableDetail() {
         setDataDia(diaJson);
       } catch (error) {
         console.error("Error cargando los datos:", error);
-        // Set default empty states on error
         setDataLive([]);
         setDataSemana([]);
         setDataDia(null);
@@ -46,9 +50,13 @@ export default function VariableDetail() {
     };
 
     fetchData();
+    const interval = setInterval(fetchData, 10000);
+    return () => clearInterval(interval);
   }, [v.key]);
 
   const colorGlobal = "#47a2b9ff";
+  const niveles = nivelesPorVariable[v.key] || [];
+  const importanciaTexto = importanciasPorVariable[v.key] || "";
 
   return (
     <div className="variableDetailContainer">
@@ -68,6 +76,35 @@ export default function VariableDetail() {
       <div className="variablePromediosContainer">
         <Histograma10Dias data={dataSemana} variable={v.key} />
         <AnilloDiario data={dataDia} variable={v.key} />
+      </div>
+
+
+      <div className="importanciaContainer">
+        <h2>¿Por qué es importante?</h2>
+        <p>{importanciaTexto}</p>
+      </div>
+
+      <div className="tablaNivelesContainer">
+        <div className="tablaNivelesTitulo"><h2>Rangos de {v.label}</h2></div>
+        
+        <table className="tablaNiveles">
+          <thead>
+            <tr>
+              <th>Categoría</th>
+              <th>Rango</th>
+            </tr>
+          </thead>
+          <tbody>
+            {niveles.map((nivel, index) => (
+              <tr key={index} style={{ backgroundColor: nivel.color }}>
+                <td>{nivel.label}</td>
+                <td>
+                  {nivel.rango[0]} – {nivel.rango[1]}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

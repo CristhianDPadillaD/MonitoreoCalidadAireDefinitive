@@ -59,6 +59,61 @@
   min-height: auto;
 }
 
+.importanciaContainer {
+  margin-top: 2rem;
+  text-align: center;
+  padding: 30px;
+  font-size: 1.1rem;
+  border-radius: 6px;
+  border: 1px solid #b9b9b9;
+}
+
+.importanciaContainer h2 {
+  font-size: 3rem;
+  margin-bottom: 40px;
+}
+
+.tablaNivelesContainer {
+  margin-top: 40px;
+  font-size: 1rem;
+}
+
+.tablaNivelesTitulo {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.tablaNiveles {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tablaNiveles th, .tablaNiveles td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.tablaNiveles th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.tablaNiveles tr td:first-child {
+  font-weight: 500;
+}
+
+.separador {
+  margin-top: 40px;
+  border: 0;
+  border-top: 2px solid #ccc;
+}
+
+
 /* para responsive */
 @media (max-width: 768px) {
   .variablePromediosContainer {
