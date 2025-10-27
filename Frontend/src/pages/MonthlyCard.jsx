@@ -7,18 +7,17 @@ export default function MonthlyCard() {
   const hoy = new Date();
   const [anio, setAnio] = useState(hoy.getFullYear());
   const [mes, setMes] = useState(hoy.getMonth() + 1);
-  const [variable, setVariable] = useState("pm2_5"); // 🔹 valor inicial por defecto
+  const [variable, setVariable] = useState("pm25"); 
   const [datos, setDatos] = useState([]);
   const [error, setError] = useState("");
 
-  const niveles = nivelesPorVariable[variable] || []; // 🔹 usa niveles según la variable elegida
+  const niveles = nivelesPorVariable[variable] || []; 
 
   const meses = [
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
   ];
 
-  // 🔹 Manejo de cambios de selectores
   const handleVariableChange = (e) => setVariable(e.target.value);
 
   const handleMesChange = (e) => {
@@ -43,7 +42,6 @@ export default function MonthlyCard() {
 
   const diasEnMes = new Date(anio, mes, 0).getDate();
 
-  // 🔹 Llamada al backend
   useEffect(() => {
     async function obtenerDatos() {
       try {
@@ -54,7 +52,6 @@ export default function MonthlyCard() {
 
         if (!res.ok) {
           if (res.status === 404) {
-            // No data available, set empty matrix
             setDatos(Array.from({ length: diasEnMes }, () => null));
             return;
           } else {
@@ -64,7 +61,7 @@ export default function MonthlyCard() {
 
         const data = await res.json();
 
-        // Crear matriz con los días del mes
+        // crear matriz con los días del mes
         const matriz = Array.from({ length: diasEnMes }, () => null);
         data.forEach((d) => {
           const diaNum = new Date(d.dia).getDate();
@@ -81,7 +78,7 @@ export default function MonthlyCard() {
     obtenerDatos();
   }, [anio, mes, variable]);
 
-  // 🔹 Función para obtener color según promedio
+  // funcion para obtener color según promedio
   const getColorPorPromedio = (promedio) => {
     if (promedio == null) return "#d9d9d9"; // gris para sin datos
     const nivel = niveles.find(
@@ -124,7 +121,7 @@ export default function MonthlyCard() {
 
         <select value={variable} onChange={handleVariableChange}>
           <option value="pm1">PM1</option>
-          <option value="pm2_5">PM2.5</option>
+          <option value="pm25">PM2.5</option>
           <option value="pm10">PM10</option>
           <option value="co">CO</option>
           <option value="presion">Presión</option>
