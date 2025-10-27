@@ -224,6 +224,7 @@ export const getPromedioUltimos7Dias = async (req, res) => {
     if (!variable) {
       return res.status(400).json({ error: 'Variable no proporcionada' });
     }
+
     const fieldMap = {
       co: 'co',
       pm1: 'pm1',
@@ -235,10 +236,21 @@ export const getPromedioUltimos7Dias = async (req, res) => {
     const campo = fieldMap[variable] || variable;
     const fechaDesde = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
     const canalizacionAgregacion = [
-      { $match: { createdAt: { $gte: fechaDesde }, [campo]: { $ne: null, $type: 'number' } } },
+      {
+        $match: {
+          createdAt: { $gte: fechaDesde },
+          [campo]: { $ne: null, $type: 'number' }
+        }
+      },
       {
         $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$createdAt',
+              timezone: 'America/Bogota'
+            }
+          },
           suma: { $sum: `$${campo}` },
           cantidad: { $sum: 1 }
         }
@@ -253,15 +265,34 @@ export const getPromedioUltimos7Dias = async (req, res) => {
       { $sort: { dia: -1 } },
       { $limit: 7 }
     ];
+
     const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
+
     if (promediosCalculados.length === 0) {
       return res.json([]);
     }
-    const resultado = promediosCalculados.map(p => ({
-      dia: p.dia,
-      diaSemana: new Date(p.dia).toLocaleDateString('es-ES', { weekday: 'short' }).replace('.', '').charAt(0).toUpperCase() + new Date(p.dia).toLocaleDateString('es-ES', { weekday: 'short' }).replace('.', '').slice(1),
-      promedio: parseFloat(p.promedio.toFixed(2))
-    }));
+
+    const resultado = promediosCalculados.map(p => {
+
+      const fechaLocal = new Date(`${p.dia}T00:00:00-05:00`);
+
+      const diaSemana = fechaLocal
+        .toLocaleDateString('es-CO', {
+          weekday: 'short',
+          timeZone: 'America/Bogota'
+        })
+        .replace('.', ''); 
+
+      const diaSemanaCapitalizado =
+        diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+
+      return {
+        dia: p.dia,
+        diaSemana: diaSemanaCapitalizado,
+        promedio: parseFloat(p.promedio.toFixed(2))
+      };
+    });
+
     res.json(resultado);
   } catch (error) {
     console.error('Error en promedio últimos 7 días:', error);
@@ -284,14 +315,27 @@ export const getPromedioMensual = async (req, res) => {
       presion: 'presion'
     };
     const campo = fieldMap[variable] || variable;
+
     const [year, month] = mes.split('-').map(Number);
     const fechaInicio = new Date(year, month - 1, 1);
     const fechaFin = new Date(year, month, 1);
+
     const canalizacionAgregacion = [
-      { $match: { createdAt: { $gte: fechaInicio, $lt: fechaFin }, [campo]: { $ne: null, $type: 'number' } } },
+      {
+        $match: {
+          createdAt: { $gte: fechaInicio, $lt: fechaFin },
+          [campo]: { $ne: null, $type: 'number' }
+        }
+      },
       {
         $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$createdAt',
+              timezone: 'America/Bogota'
+            }
+          },
           suma: { $sum: `$${campo}` },
           cantidad: { $sum: 1 }
         }
@@ -303,24 +347,40 @@ export const getPromedioMensual = async (req, res) => {
           _id: 0
         }
       },
-      { $sort: { dia: 1 } }
+      { $sort: { dia: 1 } } // Orden cronológico
     ];
+
     const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
+
     if (promediosCalculados.length === 0) {
       return res.json([]);
     }
-    const resultado = promediosCalculados.map(p => ({
-      dia: p.dia,
-      diaSemana: new Date(p.dia).toLocaleDateString('es-ES', { weekday: 'long' }),
-      promedio: parseFloat(p.promedio.toFixed(2))
-    }));
+
+    const resultado = promediosCalculados.map(p => {
+      const fechaLocal = new Date(`${p.dia}T00:00:00-05:00`);
+      const diaSemana = fechaLocal
+        .toLocaleDateString('es-CO', {
+          weekday: 'short',
+          timeZone: 'America/Bogota'
+        })
+        .replace('.', '');
+
+      const diaSemanaCapitalizado =
+        diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+
+      return {
+        dia: p.dia,
+        diaSemana: diaSemanaCapitalizado,
+        promedio: parseFloat(p.promedio.toFixed(2))
+      };
+    });
+
     res.json(resultado);
   } catch (error) {
     console.error('Error en promedio mensual:', error);
     res.status(500).json({ error: 'Error al calcular promedio mensual' });
   }
 };
-
 export const getDatosCrudosDia = async (req, res) => {
   try {
     const { fecha } = req.query;
@@ -328,13 +388,11 @@ export const getDatosCrudosDia = async (req, res) => {
       return res.status(400).json({ error: 'Fecha no proporcionada. Use el formato YYYY-MM-DD' });
     }
 
-    // Validar formato de fecha
     const fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!fechaRegex.test(fecha)) {
       return res.status(400).json({ error: 'Formato de fecha inválido. Use YYYY-MM-DD' });
     }
 
-    // Obtener datos del día específico
     const fechaInicio = new Date(fecha + 'T00:00:00.000Z');
     const fechaFin = new Date(fecha + 'T23:59:59.999Z');
 
@@ -346,7 +404,6 @@ export const getDatosCrudosDia = async (req, res) => {
       return res.status(404).json({ error: 'No hay datos disponibles para la fecha seleccionada' });
     }
 
-    // Preparar datos para CSV (solo variables crudas recolectadas)
     const datosParaCsv = datos.map(dato => ({
       timestamp: dato.timestamp,
       temperatura: dato.temperatura,
@@ -359,16 +416,15 @@ export const getDatosCrudosDia = async (req, res) => {
       pm10: dato.pm10
     }));
 
-    // Convertir a CSV
     const parser = new Parser();
     const csv = parser.parse(datosParaCsv);
 
-    // Configurar headers para descarga
+
     const nombreArchivo = `datos_crudo_${fecha}.csv`;
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
 
-    // Enviar CSV
+
     res.send(csv);
 
   } catch (error) {
