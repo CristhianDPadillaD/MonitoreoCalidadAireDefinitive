@@ -6,12 +6,19 @@ import {
   getUltimosPM25,
   getUltimosPM10,
   getUltimasTemperaturas,
-  getUltimasPresiones,
+  getUltimasPresiones
+} from '../controllers/historial/historicoController.js';
+
+import{
   getPromedioDiaActual,
   getPromedioUltimos7Dias,
-  getPromedioMensual,
-  getDatosCrudosDia
-} from '../controllers/historialController.js';
+  getPromedioMensual
+}from '../controllers/historial/estadisticasController.js';
+
+import{
+  getDatosCrudosDia,
+  generarReportePDF
+}from '../controllers/historial/exportacionController.js';
 
 const router = express.Router();
 
@@ -35,5 +42,6 @@ router.get('/promedio-mes', getPromedioMensual);
 
 // Descarga de datos crudos
 router.get('/descargar-csv', getDatosCrudosDia);
+router.get('/generar-pdf', generarReportePDF);
 
 export default router;
