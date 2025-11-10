@@ -18,6 +18,7 @@ export default function Navbar() {
         <Link to="/variableSelect" className="">Contaminantes</Link>
         <Link to="/monthlyCard" className="">Niveles mensuales</Link>
         <Link to="/dataDownload" className="">Descargar datos</Link>
+        <Link to="/generarReporte" className="">Generar reporte</Link>
         <Link to="/iniciarSesion" className="IniciarSesionButton">Iniciar sesión</Link>
       </div>
     </nav>

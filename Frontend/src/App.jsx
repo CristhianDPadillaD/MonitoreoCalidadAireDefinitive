@@ -6,6 +6,7 @@ import VariableDetail from "./pages/VariableDetail"
 import VariableSelect from "./pages/VariableSelect"
 import MonthlyCard from "./pages/MonthlyCard"
 import DataDownload from "./pages/DataDownload"
+import GenerarReporte from "./pages/GenerarReporte"
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/variable/:key" element={<VariableDetail />} />
           <Route path="/monthlyCard" element={<MonthlyCard />} />
           <Route path="/dataDownload" element={<DataDownload />} />
+          <Route path="/generarReporte" element={<GenerarReporte />} />
         </Routes>
       </main>
     </div>
