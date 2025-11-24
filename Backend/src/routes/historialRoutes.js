@@ -9,10 +9,14 @@ import {
   getUltimasPresiones
 } from '../controllers/historial/historicoController.js';
 
+
 import{
   getPromedioDiaActual,
   getPromedioUltimos7Dias,
-  getPromedioMensual
+  getPromedioMensual,
+  getDesviacionEstandarDiaActual,
+  getCuartilesDiaActual,
+  getComparacionDias
 }from '../controllers/historial/estadisticasController.js';
 
 import{
@@ -39,6 +43,9 @@ router.get('/ultimas/presiones', getUltimasPresiones);
 router.get('/promedio-dia', getPromedioDiaActual);
 router.get('/promedio-semana', getPromedioUltimos7Dias);
 router.get('/promedio-mes', getPromedioMensual);
+router.get('/desviacion-estandar-dia', getDesviacionEstandarDiaActual);
+router.get('/cuartiles-dia', getCuartilesDiaActual);
+router.get('/comparacion-dias', getComparacionDias);
 
 // Descarga de datos crudos
 router.get('/descargar-csv', getDatosCrudosDia);
