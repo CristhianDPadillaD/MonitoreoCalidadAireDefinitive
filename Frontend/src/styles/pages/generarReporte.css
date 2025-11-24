@@ -1,0 +1,160 @@
+.reporteContainer {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.backButton {
+    border: none;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.reporteLayout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+.leftColumn {
+    width: 65%;
+}
+
+.reporteTitle {
+  font-size: 38px;
+  margin-bottom: 15px;
+}
+
+.reporteDescription {
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.4;
+    margin-bottom: 40px;
+}
+
+.reporteDescriptionFecha {
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+.singleDateSection,
+.rangeSection {
+    border: 2px solid #bfbfbf;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+}
+
+.dateRangeGroup{
+    border: 2px solid #bfbfbf;
+    padding: 20px;
+    border-radius: 12px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.singleDateSection h3,
+.dateRangeGroup h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.dateInputs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dateInputs select{
+  padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+
+.dateInputs input {
+  width: 85px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #bfbfbf;
+  font-size: 15px;
+  text-align: center;
+}
+
+.downloadButton {
+    display: block;
+    margin: 10px auto 0;
+    padding: 14px 40px;
+    background-color: #2865a1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.downloadButton:hover {
+    background-color: #1f507f;
+}
+
+.divider {
+  margin: 45px 0;
+}
+
+.rangeDatesWrapper {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.infoPanel {
+  width: 35%;
+  border: 2px solid #bfbfbf;
+  padding: 35px;
+  border-radius: 12px;
+  background-color: #fafafa;
+  font-size: 20px;
+  line-height: 1.4;
+  height: fit-content;
+  margin-top: 110px; 
+  margin-left: 50px;
+}
+
+.infoPanel h3 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.infoList {
+  list-style: none;              
+  padding: 0;
+  margin-top: 15px;
+}
+
+.infoList li {
+  margin-bottom: 14px;           
+  padding-left: 20px;           
+  position: relative;
+  font-size: 20px;
+}
+
+
+.infoList li::before {
+  content: "•";                 
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 22px;
+  color: #2865a1;               
+  line-height: 14px;
+}
