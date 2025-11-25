@@ -16,14 +16,14 @@ export default function VariableDetail() {
   const [dataLive, setDataLive] = useState([]);
   const [dataSemana, setDataSemana] = useState([]);
   const [dataDia, setDataDia] = useState(null);
+  const [desviacionDia, setDesviacionDia] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const endpointLive =
           v.key === "temperatura" || v.key === "presion"
-            ? `http://localhost:3000/api/historial/ultimas/${v.key === "temperatura" ? "temperaturas" : "presiones"
-            }`
+            ? `http://localhost:3000/api/historial/ultimas/${v.key === "temperatura" ? "temperaturas" : "presiones"}`
             : `http://localhost:3000/api/historial/ultimos/${v.key}`;
 
         const resLive = await fetch(endpointLive);
@@ -41,13 +41,22 @@ export default function VariableDetail() {
         );
         const diaJson = await resDia.json();
         setDataDia(diaJson);
+
+        const resDesviacion = await fetch(
+          `http://localhost:3000/api/historial/desviacion-estandar-dia?variable=${v.key}`
+        );
+        const desvJson = await resDesviacion.json();
+        setDesviacionDia(desvJson);
+
       } catch (error) {
         console.error("Error cargando los datos:", error);
         setDataLive([]);
         setDataSemana([]);
         setDataDia(null);
+        setDesviacionDia(null); 
       }
     };
+
 
     fetchData();
     const interval = setInterval(fetchData, 10000);
@@ -75,7 +84,7 @@ export default function VariableDetail() {
 
       <div className="variablePromediosContainer">
         <Histograma10Dias data={dataSemana} variable={v.key} />
-        <AnilloDiario data={dataDia} variable={v.key} />
+        <AnilloDiario data={dataDia} variable={v.key} desviacion={desviacionDia} />
       </div>
 
       <div className="boxplotWrapper">

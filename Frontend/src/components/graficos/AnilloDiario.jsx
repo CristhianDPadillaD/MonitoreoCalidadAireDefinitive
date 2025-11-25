@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recha
 import nivelesPorVariable from "../../config/nivelesPorVariable";
 import "../../styles/components/anilloDiario.css"
 
-export default function AnilloDiario({ data, variable }) {
+export default function AnilloDiario({ data, variable, desviacion }) {
   console.log("data recibida en AnilloDiario:", data, "Variable:", variable);
 
   if (!data || data.promedio === undefined) {
@@ -78,12 +78,21 @@ export default function AnilloDiario({ data, variable }) {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
+      <div className="nivelDesviacionContainer">
+        {nivel && (
+          <p className="nivelEtiqueta">
+            Nivel: <strong>{nivel.label}</strong>
+          </p>
 
-      {nivel && (
-        <p className="nivelEtiqueta">
-          Nivel: <strong>{nivel.label}</strong>
-        </p>
-      )}
+        )}
+
+        {desviacion && (
+          <p className="nivelEtiqueta">
+            Desviación estándar: <strong>{desviacion.desviacionEstandar}</strong>
+          </p>
+        )}
+      </div>
+
     </div>
   );
 }
