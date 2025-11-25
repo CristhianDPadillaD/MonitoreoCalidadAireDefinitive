@@ -64,7 +64,7 @@ const GenerarReporte = () => {
           <h2 className="reporteTitle">GENERA UN REPORTE DE LA CALIDAD DEL AIRE</h2>
 
           <p className="reporteDescription">
-            Quieres obtener un analisis de la calidad del aire de un dia en especifico?
+            ¿Quieres obtener un analisis de la calidad del aire de un dia en especifico?
             Puedes hacerlo seleccionando el dia que te interese, incluso puedes hacerlo durante un periodo de tiempo,
             selecciona el intervalo de los dias que necesites y generalo con un solo clic.
           </p>

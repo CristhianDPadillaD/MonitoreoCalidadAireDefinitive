@@ -59,6 +59,19 @@
   min-height: auto;
 }
 
+.boxplotWrapper {
+  width: 100%;
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.boxplotWrapper > div {
+  width: 100%;
+  max-width: 1100px; 
+  height: auto;
+}
+
 .importanciaContainer {
   margin-top: 2rem;
   text-align: center;
