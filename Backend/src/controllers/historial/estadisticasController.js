@@ -6,6 +6,7 @@ export const getPromedioDiaActual = async (req, res) => {
     if (!variable) {
       return res.status(400).json({ error: 'Variable no proporcionada' });
     }
+    
     const fieldMap = {
       co: 'co',
       pm1: 'pm1',
@@ -14,6 +15,7 @@ export const getPromedioDiaActual = async (req, res) => {
       temperatura: 'temperatura',
       presion: 'presion'
     };
+    
     const campo = fieldMap[variable] || variable;
     const hoy = new Date().toLocaleDateString('sv-SE');
     const canalizacionAgregacion = [
@@ -265,80 +267,6 @@ export const getDesviacionEstandarDiaActual = async (req, res) => {
   }
 };
 
-export const getComparacionDias = async (req, res) => {
-  try {
-    const { fecha1, fecha2, variable } = req.query;
-
-    if (!fecha1 || !fecha2 || !variable) {
-      return res.status(400).json({ error: 'fecha1, fecha2 y variable son requeridos' });
-    }
-
-    const fieldMap = {
-      co: 'co',
-      pm1: 'pm1',
-      pm25: 'pm2_5',
-      pm10: 'pm10',
-      temperatura: 'temperatura',
-      presion: 'presion'
-    };
-
-    const campo = fieldMap[variable] || variable;
-
-    const pipeline = [
-      {
-        $match: {
-          $expr: {
-            $or: [
-              { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, fecha1] },
-              { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, fecha2] }
-            ]
-          },
-          [campo]: { $ne: null, $type: 'number' }
-        }
-      },
-      {
-        $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
-          suma: { $sum: `$${campo}` },
-          cantidad: { $sum: 1 }
-        }
-      },
-      {
-        $project: {
-          dia: '$_id',
-          promedio: { $divide: ['$suma', '$cantidad'] },
-          _id: 0
-        }
-      }
-    ];
-
-    const resultados = await Dato.aggregate(pipeline);
-
-    let promedio1 = null;
-    let promedio2 = null;
-
-    resultados.forEach(r => {
-      if (r.dia === fecha1) {
-        promedio1 = parseFloat(r.promedio.toFixed(2));
-      } else if (r.dia === fecha2) {
-        promedio2 = parseFloat(r.promedio.toFixed(2));
-      }
-    });
-
-    const respuesta = {
-      fecha1: fecha1,
-      promedio1: promedio1,
-      fecha2: fecha2,
-      promedio2: promedio2
-    };
-
-    res.json(respuesta);
-  } catch (error) {
-    console.error('Error en getComparacionDias:', error);
-    res.status(500).json({ error: 'Error al calcular comparación de días' });
-  }
-};
-
 export const getCuartilesDiaActual = async (req, res) => {
   try {
     const { variable } = req.query;
@@ -452,3 +380,4 @@ export const getCuartilesDiaActual = async (req, res) => {
     res.status(500).json({ error: "Error al calcular cuartiles" });
   }
 };
+

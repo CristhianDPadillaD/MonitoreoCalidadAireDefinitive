@@ -55,6 +55,114 @@ export const getDatosCrudosDia = async (req, res) => {
   }
 };
 
+export const generarComparacionDiasReportePDF = async (req, res) => {
+  try {
+    const { fecha1, fecha2 } = req.query;
+
+    if (!fecha1 || !fecha2) {
+      return res.status(400).json({ error: 'Debe proporcionar ambas fechas: fecha1 y fecha2' });
+    }
+
+    const variables = ['co', 'pm1', 'pm2_5', 'pm10', 'temperatura', 'presion'];
+
+    const fechas = [fecha1, fecha2];
+
+    const pipeline = [
+      {
+        $match: {
+          $expr: {
+            $or: fechas.map(fecha => ({
+              $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'America/Bogota' } }, fecha]
+            }))
+          }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            dia: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'America/Bogota' } }
+          },
+          co: { $avg: '$co' },
+          pm1: { $avg: '$pm1' },
+          pm2_5: { $avg: '$pm2_5' },
+          pm10: { $avg: '$pm10' },
+          temperatura: { $avg: '$temperatura' },
+          presion: { $avg: '$presion' }
+        }
+      },
+      { $sort: { '_id.dia': 1 } }
+    ];
+
+    const resultados = await Dato.aggregate(pipeline);
+
+    if (resultados.length === 0) {
+      return res.status(404).json({ error: 'No existen registros para las fechas proporcionadas' });
+    }
+
+    const datosPorFecha = {};
+    resultados.forEach(r => {
+      datosPorFecha[r._id.dia] = r;
+    });
+
+    const limitesResolucion = {
+      co: 10000,
+      pm1: 50,
+      pm25: 25,
+      pm10: 50,
+      temperatura: 35,
+      presion: 1013
+    };
+
+    const dataTabla = variables.map(v => {
+      const valor1 = datosPorFecha[fecha1] ? datosPorFecha[fecha1][v] : null;
+      const valor2 = datosPorFecha[fecha2] ? datosPorFecha[fecha2][v] : null;
+
+      const promedio1 = valor1 != null ? parseFloat(valor1.toFixed(2)) : 'N/A';
+      const promedio2 = valor2 != null ? parseFloat(valor2.toFixed(2)) : 'N/A';
+
+      let diferencia = 'N/A';
+      if (valor1 != null && valor2 != null) {
+        diferencia = parseFloat(Math.abs(valor1 - valor2).toFixed(2));
+      }
+
+      const variableFormato = v === 'pm2_5' ? 'PM2_5' : v.toUpperCase();
+
+      
+      const clave = v === 'pm2_5' ? 'pm25' : v;
+      const estado1 = typeof promedio1 === 'number' ? (promedio1 > limitesResolucion[clave] ? 'Supera el límite' : 'Dentro del límite') : 'Sin datos';
+      const estado2 = typeof promedio2 === 'number' ? (promedio2 > limitesResolucion[clave] ? 'Supera el límite' : 'Dentro del límite') : 'Sin datos';
+
+      return [variableFormato, promedio1, estado1, promedio2, estado2, diferencia];
+    });
+
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(14);
+    doc.text(`Reporte Comparativo entre ${fecha1} y ${fecha2}`, 14, 20);
+    doc.setFontSize(11);
+    doc.text('Comparación de promedios y diferencia absoluta de variables', 14, 28);
+
+    autoTable(doc, {
+      startY: 40,
+      head: [['Variable', `Promedio ${fecha1}`, 'Estado', `Promedio ${fecha2}`, 'Estado', `Diferencia entre ${fecha1} y ${fecha2}`]],
+      body: dataTabla
+    });
+
+    const nombreArchivo = `comparacion_dias_${fecha1}_vs_${fecha2}.pdf`;
+    const pdfBuffer = doc.output('arraybuffer');
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
+    res.send(Buffer.from(pdfBuffer));
+
+  } catch (error) {
+    console.error('Error al generar el reporte comparativo:', error);
+    res.status(500).json({ error: 'Error interno al generar el reporte comparativo PDF' });
+  }
+};
+
+
 const limitesResolucion = {
   co: 10000,
   pm1: 50,

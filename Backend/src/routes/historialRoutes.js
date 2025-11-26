@@ -15,16 +15,17 @@ import{
   getPromedioUltimos7Dias,
   getPromedioMensual,
   getDesviacionEstandarDiaActual,
-  getCuartilesDiaActual,
-  getComparacionDias
+  getCuartilesDiaActual
 }from '../controllers/historial/estadisticasController.js';
 
-import{
+import {
   getDatosCrudosDia,
-  generarReportePDF
-}from '../controllers/historial/exportacionController.js';
+  generarReportePDF,
+  generarComparacionDiasReportePDF
+} from '../controllers/historial/exportacionController.js';
 
 const router = express.Router();
+
 
 // Últimos datos completos
 router.get('/ultimo', getUltimoDato);
@@ -45,10 +46,11 @@ router.get('/promedio-semana', getPromedioUltimos7Dias);
 router.get('/promedio-mes', getPromedioMensual);
 router.get('/desviacion-estandar-dia', getDesviacionEstandarDiaActual);
 router.get('/cuartiles-dia', getCuartilesDiaActual);
-router.get('/comparacion-dias', getComparacionDias);
 
-// Descarga de datos crudos
+
+// Descarga de datos
 router.get('/descargar-csv', getDatosCrudosDia);
 router.get('/generar-pdf', generarReportePDF);
+router.get('/comparacion-dias-pdf', generarComparacionDiasReportePDF);
 
 export default router;
