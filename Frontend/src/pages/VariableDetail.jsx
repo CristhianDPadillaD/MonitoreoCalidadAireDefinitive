@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import SimpleAreaChart from "../components/graficos/SimpleAreaChart";
 import Histograma10Dias from "../components/graficos/Histograma7Dias";
 import AnilloDiario from "../components/graficos/AnilloDiario";
+import Boxplot from "../components/graficos/Bloxpot";
 import { VARIABLES_ALL } from "../config/variablesAll";
 import nivelesPorVariable from "../config/nivelesPorVariable";
 import importanciasPorVariable from "../config/importanciasPorVariable";
@@ -12,18 +13,17 @@ export default function VariableDetail() {
   const { key } = useParams();
   const v = VARIABLES_ALL.find((x) => x.key === key) || VARIABLES_ALL[0];
 
-  const [dataLive, setDataLive] = useState([]); 
+  const [dataLive, setDataLive] = useState([]);
   const [dataSemana, setDataSemana] = useState([]);
   const [dataDia, setDataDia] = useState(null);
+  const [desviacionDia, setDesviacionDia] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const endpointLive =
           v.key === "temperatura" || v.key === "presion"
-            ? `http://localhost:3000/api/historial/ultimas/${
-                v.key === "temperatura" ? "temperaturas" : "presiones"
-              }`
+            ? `http://localhost:3000/api/historial/ultimas/${v.key === "temperatura" ? "temperaturas" : "presiones"}`
             : `http://localhost:3000/api/historial/ultimos/${v.key}`;
 
         const resLive = await fetch(endpointLive);
@@ -41,13 +41,22 @@ export default function VariableDetail() {
         );
         const diaJson = await resDia.json();
         setDataDia(diaJson);
+
+        const resDesviacion = await fetch(
+          `http://localhost:3000/api/historial/desviacion-estandar-dia?variable=${v.key}`
+        );
+        const desvJson = await resDesviacion.json();
+        setDesviacionDia(desvJson);
+
       } catch (error) {
         console.error("Error cargando los datos:", error);
         setDataLive([]);
         setDataSemana([]);
         setDataDia(null);
+        setDesviacionDia(null); 
       }
     };
+
 
     fetchData();
     const interval = setInterval(fetchData, 10000);
@@ -75,7 +84,11 @@ export default function VariableDetail() {
 
       <div className="variablePromediosContainer">
         <Histograma10Dias data={dataSemana} variable={v.key} />
-        <AnilloDiario data={dataDia} variable={v.key} />
+        <AnilloDiario data={dataDia} variable={v.key} desviacion={desviacionDia} />
+      </div>
+
+      <div className="boxplotWrapper">
+        <Boxplot variable={v.key} />
       </div>
 
 
@@ -86,7 +99,7 @@ export default function VariableDetail() {
 
       <div className="tablaNivelesContainer">
         <div className="tablaNivelesTitulo"><h2>Rangos de {v.label}</h2></div>
-        
+
         <table className="tablaNiveles">
           <thead>
             <tr>
