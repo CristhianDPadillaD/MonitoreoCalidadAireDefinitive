@@ -29,8 +29,8 @@ export default function Boxplot({ variable }) {
             Cargando diagrama...
         </div>
     );
-    if (error) return <div>Error cargando diagrama de cajas</div>;
-    if (!box) return <div>No hay datos del boxplot para este día.</div>;
+    if (error) return <div>Error cargando diagrama de cajas,</div>;
+    if (!box) return <div>No hay registros en el dia actual.</div>;
 
     const { q1, q2, q3, limite_inferior, limite_superior, valoresAtipicos = [] } = box;
 

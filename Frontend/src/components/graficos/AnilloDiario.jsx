@@ -70,11 +70,27 @@ export default function AnilloDiario({ data, variable, desviacion }) {
             innerRadius={60}
             outerRadius={90}
             paddingAngle={5}
+            isAnimationActive={false}
           >
             {chartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
+
+          {/* texto central */}
+          <text
+            x="49.5%"
+            y="47%"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            className="valorCentralAnillo"
+          >
+            {valor.toFixed(2)}
+          </text>
+
           <Legend />
         </PieChart>
       </ResponsiveContainer>

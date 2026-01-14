@@ -97,8 +97,6 @@ export default function Home() {
             <div className="aceptableContainer">Calidad de aire aceptable</div>
             <div className="dañinaSensiblesContainer">Calidad de aire dañina para grupos sensibles</div>
             <div className="dañinaContainer">Calidad de aire dañina para la salud</div>
-            <div className="muyDañinaContainer">Calidad de aire muy dañina</div>
-            <div className="peligrosaContainer">Calidad de aire peligrosa</div>
           </div>
         </div>
       </aside>
