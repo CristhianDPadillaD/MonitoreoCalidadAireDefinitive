@@ -127,7 +127,9 @@
 }
 
 
-/* para responsive */
+/* ===========================
+   movil
+   =========================== */
 @media (max-width: 768px) {
   .variablePromediosContainer {
     grid-template-columns: 1fr;

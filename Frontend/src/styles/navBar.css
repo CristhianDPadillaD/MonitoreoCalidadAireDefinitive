@@ -64,3 +64,72 @@
   border: 1px solid #ffffff;
   padding: 0.4rem 0.95rem; 
 }
+
+
+/* =======================
+   Boton hamburguesa menu
+======================= */
+.menuToggle {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #ecf0f1;
+  cursor: pointer;
+}
+
+/* =======================
+   tablet
+======================= */
+@media (max-width: 1024px) {
+
+  .menuToggle {
+    display: block;
+  }
+
+  .navBarLinks {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #072441;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    display: none;
+  }
+
+  .navBarLinks.active {
+    display: flex;
+  }
+
+  .navBarLinks a {
+    padding: 1rem;
+    border-radius: 0;
+    border-top: 1px solid #294866;
+    text-align: center;
+  }
+
+  .IniciarSesionButton {
+    margin: 1rem;
+    text-align: center;
+  }
+}
+
+/* =======================
+   movil
+======================= */
+@media (max-width: 600px) {
+
+  .navBarContainer {
+    padding: 0.8rem 1.2rem;
+  }
+
+  .navBarTitulo {
+    font-size: 1.2rem;
+  }
+
+  .navBarLogo {
+    height: 32px;
+  }
+}

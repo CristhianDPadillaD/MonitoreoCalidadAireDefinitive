@@ -44,7 +44,6 @@
     border: 1px solid #304a9e;
 }
 
-/* --- matriz principal container--- */
 .monthlyMatriz {
     display: flex;
     justify-content: flex-start;
@@ -86,7 +85,6 @@
     color: #333;
 }
 
-/* --- que significa explicacion --- */
 .queSignificaContainer {
     border: 1px solid #ccc;
     border-radius: 12px;
@@ -126,7 +124,6 @@
     border: 1px dashed #777;
 }
 
-/* --- mensajes --- */
 .monthly-error {
     background-color: #e69a9a;
     color: #4b0c0c;
@@ -138,7 +135,7 @@
     margin-left: 10px;
 }
 
-/* --- boton volver --- */
+
 .volver {
     font-size: 0.95rem;
     font-weight: 500;
@@ -150,9 +147,9 @@
     color: #1e3a8a;
 }
 
-/* Responsive */
-
-/* Tablets medianas (≤1024px) */
+/* ===========================
+   tablet
+   =========================== */
 @media (max-width: 1024px) {
     .monthlyContainer {
         padding: 20px 40px;
@@ -187,7 +184,9 @@
     }
 }
 
-/* Pantallas pequeñas (≤768px) */
+/* ===========================
+   movil muy pequeño
+   =========================== */
 @media (max-width: 768px) {
     .monthlyContainer {
         padding: 15px 25px;
@@ -227,7 +226,9 @@
     }
 }
 
-/* Celulares pequeños (≤480px) */
+/* ===========================
+   movil
+   =========================== */
 @media (max-width: 480px) {
     .monthlyContainer {
         padding: 10px 15px;

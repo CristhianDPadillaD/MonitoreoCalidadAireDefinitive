@@ -7,6 +7,7 @@ import VariableSelect from "./pages/VariableSelect"
 import MonthlyCard from "./pages/MonthlyCard"
 import DataDownload from "./pages/DataDownload"
 import GenerarReporte from "./pages/GenerarReporte"
+import CompararDatos from "./pages/CompararDatos"
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/monthlyCard" element={<MonthlyCard />} />
           <Route path="/dataDownload" element={<DataDownload />} />
           <Route path="/generarReporte" element={<GenerarReporte />} />
+          <Route path="/compararDatos" element={<CompararDatos />} />
         </Routes>
       </main>
     </div>

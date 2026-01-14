@@ -158,3 +158,88 @@
   color: #2865a1;               
   line-height: 14px;
 }
+
+/* =======================
+   tablet
+======================= */
+@media (max-width: 1024px) {
+
+  .reporteLayout {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .leftColumn,
+  .infoPanel {
+    width: 100%;
+  }
+
+  .infoPanel {
+    margin-top: 0;
+    margin-left: 0;
+  }
+
+  .rangeDatesWrapper {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+/* =======================
+   movil
+======================= */
+@media (max-width: 600px) {
+
+  .reporteContainer {
+    padding: 20px;
+  }
+
+  .reporteTitle {
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .reporteDescription,
+  .reporteDescriptionFecha {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .singleDateSection,
+  .rangeSection,
+  .dateRangeGroup {
+    padding: 20px;
+  }
+
+  .dateInputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dateInputs select {
+    width: 100%;
+  }
+
+  .downloadButton {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  .infoPanel {
+    font-size: 16px;
+    padding: 25px;
+  }
+
+  .infoPanel h3 {
+    font-size: 22px;
+  }
+
+  .infoList li {
+    font-size: 16px;
+  }
+
+  .backButton {
+    font-size: 16px;
+  }
+}

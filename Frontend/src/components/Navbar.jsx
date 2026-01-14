@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import "../styles/navBar.css";
 
 export default function Navbar() {
+  const [menuAbierto, setMenuAbierto] = useState(false);
+
   return (
     <nav className="navBarContainer">
       <div className="navBarLogoTitulo">
@@ -13,13 +16,28 @@ export default function Navbar() {
         <h1 className="navBarTitulo">AQuMaS</h1>
       </div>
 
-      <div className="navBarLinks">
-        <Link to="/" className="">Inicio</Link>
-        <Link to="/variableSelect" className="">Contaminantes</Link>
-        <Link to="/monthlyCard" className="">Niveles mensuales</Link>
-        <Link to="/dataDownload" className="">Descargar datos</Link>
-        <Link to="/generarReporte" className="">Generar reporte</Link>
-        <Link to="/iniciarSesion" className="IniciarSesionButton">Iniciar sesión</Link>
+      {/* Botón hamburguesa */}
+      <button
+        className="menuToggle"
+        onClick={() => setMenuAbierto(!menuAbierto)}
+      >
+        ☰
+      </button>
+
+      <div className={`navBarLinks ${menuAbierto ? "active" : ""}`}>
+        <Link to="/" onClick={() => setMenuAbierto(false)}>Inicio</Link>
+        <Link to="/variableSelect" onClick={() => setMenuAbierto(false)}>Contaminantes</Link>
+        <Link to="/monthlyCard" onClick={() => setMenuAbierto(false)}>Niveles mensuales</Link>
+        <Link to="/dataDownload" onClick={() => setMenuAbierto(false)}>Descargar datos</Link>
+        <Link to="/generarReporte" onClick={() => setMenuAbierto(false)}>Generar reporte</Link>
+        <Link to="/compararDatos" onClick={() => setMenuAbierto(false)}>Comparar datos</Link>
+        <Link
+          to="/iniciarSesion"
+          className="IniciarSesionButton"
+          onClick={() => setMenuAbierto(false)}
+        >
+          Iniciar sesión
+        </Link>
       </div>
     </nav>
   );
