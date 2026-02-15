@@ -4,12 +4,12 @@ import "../styles/pages/generarReporte.css";
 const GenerarReporte = () => {
   const fechaActual = new Date();
 
-  // Fecha única
+  // fecha única
   const [year, setYear] = useState(fechaActual.getFullYear());
   const [month, setMonth] = useState(fechaActual.getMonth() + 1);
   const [day, setDay] = useState(fechaActual.getDate());
 
-  // Fecha rango
+  // fecha rango
   const [startYear, setStartYear] = useState(fechaActual.getFullYear());
   const [startMonth, setStartMonth] = useState(fechaActual.getMonth() + 1);
   const [startDay, setStartDay] = useState(fechaActual.getDate());
@@ -42,7 +42,7 @@ const GenerarReporte = () => {
 
   const getDaysInMonth = (year, month) => new Date(year, month, 0).getDate();
 
-  // Validación de fecha futura
+  // validacion de fecha futura
   const validarFechaFutura = (y, m, d) => {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
@@ -115,7 +115,7 @@ const GenerarReporte = () => {
             Puedes hacerlo seleccionando el día que te interese, incluso puedes hacerlo durante un periodo de tiempo.
           </p>
 
-          {/* FECHA ÚNICA */}
+          {/* fecha unica */}
           <div className="singleDateSection">
             <p className="reporteDescriptionFecha">
               Si quieres obtener un reporte de un día en especial
@@ -177,14 +177,14 @@ const GenerarReporte = () => {
 
           <hr className="divider" />
 
-          {/* RANGO */}
+          {/* rango */}
           <div className="rangeSection">
             <div className="rangeContent">
               <p className="reporteDescriptionFecha">
                 Si quieres obtener un reporte de un periodo de tiempo
               </p>
 
-              {/* Contenedor de fechas */}
+              {/* contenedor de fechas */}
               <div className="rangeDatesWrapper">
                 {/* Fecha inicio */}
                 <div className="dateRangeGroup">
@@ -255,7 +255,7 @@ const GenerarReporte = () => {
                   </div>
                 </div>
 
-                {/* Fecha fin */}
+                {/* fecha fin */}
                 <div className="dateRangeGroup">
                   <h3>Fecha fin</h3>
                   <div className="dateInputs">
@@ -325,7 +325,7 @@ const GenerarReporte = () => {
                 </div>
               </div>
 
-              {/* ALERTA: posición correcta */}
+              {/* alerta */}
               {errorRango && (
                 <div className="errorContainer">
                   <p className="errorFecha">{errorRango}</p>
