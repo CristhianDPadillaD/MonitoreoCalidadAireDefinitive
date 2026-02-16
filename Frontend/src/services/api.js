@@ -1,5 +1,51 @@
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
+// ========== Funciones de autenticación ==========
+
+/**
+ * Obtener token de autenticación desde localStorage
+ */
+export function getAuthToken() {
+  return localStorage.getItem('authToken');
+}
+
+/**
+ * Crear headers con autenticación
+ */
+export function getAuthHeaders() {
+  const token = getAuthToken();
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  };
+}
+
+/**
+ * Hacer una petición autenticada
+ */
+export async function fetchWithAuth(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    headers: {
+      ...getAuthHeaders(),
+      ...options.headers
+    }
+  });
+  
+  if (!res.ok) {
+    if (res.status === 401) {
+      // Token expirado o inválido
+      localStorage.removeItem('authToken');
+      window.location.href = '/';
+    }
+    throw new Error(`Error: ${res.status}`);
+  }
+  
+  return res.json();
+}
+
+// ========== Funciones de datos ==========
+
 export async function fetchLatest() {
   const res = await fetch(`${API_URL}/api/latest`);
   if (!res.ok) throw new Error("Error fetching latest");
