@@ -1,3 +1,7 @@
+import dotenv from "dotenv";
+dotenv.config({quiet: true});
+dotenv.config({ path: ".env.google", quiet: true });
+
 import express from 'express';
 import cors from 'cors';
 import passport from 'passport';
