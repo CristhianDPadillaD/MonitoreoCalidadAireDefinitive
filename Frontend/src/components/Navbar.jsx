@@ -10,7 +10,7 @@ export default function Navbar() {
   const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
   const handleLogin = () => {
-    // Redirigir a la API de Google OAuth ...
+    // Redirigir a la API de Google OAuth 
     window.location.href = `${API_URL}/api/auth/google`;
   };
 
