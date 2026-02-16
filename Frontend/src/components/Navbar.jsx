@@ -62,8 +62,8 @@ export default function Navbar() {
 
       <div className={`navBarLinks ${menuAbierto ? "active" : ""}`}>
         {/* Mostrar enlaces según el rol del usuario */}
-        {isAuthenticated() && user?.role === 'investigador' 
-          ? enlacesInvestigador 
+        {isAuthenticated() && (user?.role === 'investigador' || user?.role === 'investigator')
+          ? enlacesInvestigador
           : enlacesInvitado
         }
 
