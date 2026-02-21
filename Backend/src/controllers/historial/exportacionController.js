@@ -1,7 +1,15 @@
 import Dato from '../../models/dataModel.js';
 import { Parser } from 'json2csv';
-import {jsPDF} from 'jspdf';
+import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+const limitesResolucion = {
+  co: 10000,
+  pm1: 50,
+  pm25: 25,
+  pm10: 50,
+  temperatura: 35,
+  presion: 1013
+};
 
 export const getDatosCrudosDia = async (req, res) => {
   try {
@@ -15,12 +23,9 @@ export const getDatosCrudosDia = async (req, res) => {
       return res.status(400).json({ error: 'Formato de fecha inválido. Use YYYY-MM-DD' });
     }
 
-    const fechaInicio = new Date(fecha + 'T00:00:00.000Z');
-    const fechaFin = new Date(fecha + 'T23:59:59.999Z');
-
     const datos = await Dato.find({
-      createdAt: { $gte: fechaInicio, $lte: fechaFin }
-    }).sort({ createdAt: 1 }).lean();
+      timestamp: { $regex: `^${fecha}` }
+    }).sort({ timestamp: 1 }).lean();
 
     if (datos.length === 0) {
       return res.status(404).json({ error: 'No hay datos disponibles para la fecha seleccionada' });
@@ -70,18 +75,14 @@ export const generarComparacionDiasReportePDF = async (req, res) => {
     const pipeline = [
       {
         $match: {
-          $expr: {
-            $or: fechas.map(fecha => ({
-              $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'America/Bogota' } }, fecha]
-            }))
-          }
+          $or: fechas.map(f => ({
+            timestamp: { $regex: `^${f}` }
+          }))
         }
       },
       {
         $group: {
-          _id: {
-            dia: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'America/Bogota' } }
-          },
+          _id: { $substr: ['$timestamp', 0, 10] },
           co: { $avg: '$co' },
           pm1: { $avg: '$pm1' },
           pm2_5: { $avg: '$pm2_5' },
@@ -90,7 +91,7 @@ export const generarComparacionDiasReportePDF = async (req, res) => {
           presion: { $avg: '$presion' }
         }
       },
-      { $sort: { '_id.dia': 1 } }
+      { $sort: { _id: 1 } }
     ];
 
     const resultados = await Dato.aggregate(pipeline);
@@ -101,7 +102,7 @@ export const generarComparacionDiasReportePDF = async (req, res) => {
 
     const datosPorFecha = {};
     resultados.forEach(r => {
-      datosPorFecha[r._id.dia] = r;
+      datosPorFecha[r._id] = r; 
     });
 
     const limitesResolucion = {
@@ -127,7 +128,7 @@ export const generarComparacionDiasReportePDF = async (req, res) => {
 
       const variableFormato = v === 'pm2_5' ? 'PM2_5' : v.toUpperCase();
 
-      
+
       const clave = v === 'pm2_5' ? 'pm25' : v;
       const estado1 = typeof promedio1 === 'number' ? (promedio1 > limitesResolucion[clave] ? 'Supera el límite' : 'Dentro del límite') : 'Sin datos';
       const estado2 = typeof promedio2 === 'number' ? (promedio2 > limitesResolucion[clave] ? 'Supera el límite' : 'Dentro del límite') : 'Sin datos';
@@ -162,63 +163,56 @@ export const generarComparacionDiasReportePDF = async (req, res) => {
   }
 };
 
+export const generarReportePDF = async (req, res) => {
+  try {
+    const { fechaInicio, fechaFin } = req.query;
 
-const limitesResolucion = {
-  co: 10000,
-  pm1: 50,
-  pm25: 25,
-  pm10: 50,
-  temperatura: 35,
-  presion:1013 
-};
-
-export const generarReportePDF = async(req,res) => {
-  try { 
-    const {fechaInicio, fechaFin} = req.query;
-
-    if (!fechaInicio){
-      return res.status(400).json({error:'Debe proporcionar al menos una fecha de inicio'})
+    if (!fechaInicio) {
+      return res.status(400).json({ error: 'Debe proporcionar al menos una fecha de inicio' })
     }
-    const inicio = new Date (`${fechaInicio}T00:00:00.000Z`);
-    const fin = fechaFin ? new Date(`${fechaFin}T23:59:59.999Z`) : new Date();
 
-    if (inicio>fin){
-      return res.status(400).json({error: 'La fecha de inicio no puede ser posterior a la fecha de fin'});
+    const variables = ['co', 'pm1', 'pm2_5', 'pm10', 'temperatura', 'presion'];
+    let matchStage;
+    if (fechaFin) {
+      matchStage = {
+        $match: {
+          $and: [
+            { timestamp: { $gte: `${fechaInicio} 00:00:00` } },
+            { timestamp: { $lte: `${fechaFin} 23:59:59` } }
+          ]
+        }
+      };
+    } else {
+      matchStage = {
+        $match: {
+          timestamp: { $regex: `^${fechaInicio}` }
+        }
+      };
     }
-    const variables = ['co','pm1','pm2_5','pm10','temperatura','presion'];
 
-    const pipeline=[
+    const pipeline = [
+      matchStage,
       {
-        $match:{
-          createdAt: {$gte: inicio,$lte:fin} 
+        $group: {
+          _id: { $substr: ['$timestamp', 0, 10] },
+          co: { $avg: '$co' },
+          pm1: { $avg: '$pm1' },
+          pm2_5: { $avg: '$pm2_5' },
+          pm10: { $avg: '$pm10' },
+          temperatura: { $avg: '$temperatura' },
+          presion: { $avg: '$presion' }
         }
       },
-      {$project:{
-        dia: {$dateToString: {format: '%Y-%m-%d', date: '$createdAt', timezone:'America/Bogota'}},
-        co:1,pm1:1,pm2_5:1,pm10:1,temperatura:1,presion:1
-      }
-    },
-    {
-      $group:{
-        _id:'$dia',
-        co:{$avg:'$co'},
-        pm1: {$avg:'$pm1'},
-        pm2_5: {$avg:'$pm2_5'},
-        pm10: {$avg:'$pm10'},
-        temperatura: {$avg:'$temperatura'},
-        presion: {$avg:'$presion'}
-      }
-    },
-    {$sort:{_id:1}}
+      { $sort: { _id: 1 } }
     ];
 
     const resultados = await Dato.aggregate(pipeline);
 
-    if(resultados.length===0){
-      return res.status(404).json({error:'No existen registros para el rango de fechas proporcionadas'});
+    if (resultados.length === 0) {
+      return res.status(404).json({ error: 'No existen registros para el rango de fechas proporcionadas' });
     }
 
-    
+
     const doc = new jsPDF();
     const rangoTexto = fechaFin && fechaInicio !== fechaFin ? `${fechaInicio} a ${fechaFin}` : fechaInicio;
     doc.setFontSize(14);
@@ -228,17 +222,17 @@ export const generarReportePDF = async(req,res) => {
 
     resultados.forEach((dia, index) => {
       if (index > 0) doc.addPage();
-      
+
       const fechaDia = dia._id;
       doc.setFontSize(12);
       doc.text(`Reporte del día: ${fechaDia}`, 14, 40);
 
-      const dataTabla = variables.map(variable => { 
-        const valor = variable === 'pm2_5'? dia.pm2_5 : dia[variable];
+      const dataTabla = variables.map(variable => {
+        const valor = variable === 'pm2_5' ? dia.pm2_5 : dia[variable];
         const promedio = valor ? parseFloat(valor.toFixed(2)) : 'N/A';
-        const clave = variable === 'pm2_5' ? 'pm25': variable;
+        const clave = variable === 'pm2_5' ? 'pm25' : variable;
         const limite = limitesResolucion[clave];
-        const estado = typeof promedio ==='number'?(promedio>limite? 'Supera el límite':'Dentro del límite'):'Sin datos';
+        const estado = typeof promedio === 'number' ? (promedio > limite ? 'Supera el límite' : 'Dentro del límite') : 'Sin datos';
         return [
           clave.toUpperCase(),
           promedio, `${limite}`,
@@ -248,24 +242,24 @@ export const generarReportePDF = async(req,res) => {
 
       autoTable(doc, {
         startY: 50,
-        head:[['Variable','Promedio','Límite (Resolución 2254)','Estado']],
+        head: [['Variable', 'Promedio', 'Límite (Resolución 2254)', 'Estado']],
         body: dataTabla,
       });
-      doc.text(`Este reporte resume los valores promedio diarios de las principales variables de la calidad del aire`,14, 
+      doc.text(`Este reporte resume los valores promedio diarios de las principales variables de la calidad del aire`, 14,
         doc.lastAutoTable.finalY + 10
-       );
+      );
     });
     const nombreArchivo = fechaFin
-    ?`reporte_${fechaInicio}_a_${fechaFin}.pdf`
-    :`reporte_${fechaInicio}.pdf`;
+      ? `reporte_${fechaInicio}_a_${fechaFin}.pdf`
+      : `reporte_${fechaInicio}.pdf`;
 
     const pdfBuffer = doc.output('arraybuffer');
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename="${nombreArchivo}"`);
     res.send(Buffer.from(pdfBuffer));
 
-  }catch (error){
+  } catch (error) {
     console.error('Error al generar el reporte:', error);
-    res.status(500).json({error:'Error interno al generar el reporte PDF'});
+    res.status(500).json({ error: 'Error interno al generar el reporte PDF' });
   }
 };

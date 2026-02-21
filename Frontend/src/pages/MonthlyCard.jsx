@@ -65,7 +65,7 @@ export default function MonthlyCard() {
         const matriz = Array.from({ length: diasEnMes }, () => null);
         data.forEach((d) => {
           const diaNum = new Date(d.dia).getDate();
-          matriz[diaNum - 1] = d.promedio;
+          matriz[diaNum] = d.promedio;
         });
 
         setDatos(matriz);

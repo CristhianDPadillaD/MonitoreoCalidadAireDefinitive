@@ -1,4 +1,4 @@
-import Dato from '../../models/dataModel.js'; 
+import Dato from '../../models/dataModel.js';
 
 export const getPromedioDiaActual = async (req, res) => {
   try {
@@ -6,7 +6,7 @@ export const getPromedioDiaActual = async (req, res) => {
     if (!variable) {
       return res.status(400).json({ error: 'Variable no proporcionada' });
     }
-    
+
     const fieldMap = {
       co: 'co',
       pm1: 'pm1',
@@ -15,45 +15,41 @@ export const getPromedioDiaActual = async (req, res) => {
       temperatura: 'temperatura',
       presion: 'presion'
     };
-    
+
     const campo = fieldMap[variable] || variable;
-    const timeZone = 'America/Bogota';
-    const hoy = new Date().toLocaleDateString('sv-SE', { timeZone });
-      const ahora = new Date();
-      const inicioDia = new Date(ahora);
-      inicioDia.setHours(0, 0, 0, 0);
-      const finDia = new Date(ahora);
-      finDia.setHours(23, 59, 59, 999);
 
-      const canalizacionAgregacion = [
-        {
-          $match: {
-            createdAt: { $gte: inicioDia, $lte: finDia },
-            [campo]: { $ne: null, $type: 'number' }
-          }
-        },
-        {
-          $group: {
-            _id: null,
-            suma: { $sum: `$${campo}` },
-            cantidad: { $sum: 1 }
-          }
-        },
-        {
-          $project: {
-            promedio: { $cond: [{ $gt: ['$cantidad', 0] }, { $divide: ['$suma', '$cantidad'] }, null] },
-            _id: 0
-          }
+
+    const hoy = new Date().toISOString().slice(0, 10);
+
+    const canalizacionAgregacion = [
+      {
+        $match: {
+          timestamp: { $regex: `^${hoy}` },
+          [campo]: { $ne: null, $type: 'number' }
         }
-      ];
-
-      const resultadoAgregacion = await Dato.aggregate(canalizacionAgregacion);
-      const diaStr = inicioDia.toISOString().slice(0, 10);
-      if (resultadoAgregacion.length === 0 || resultadoAgregacion[0].promedio === null) {
-        return res.json({ dia: diaStr, promedio: null });
+      },
+      {
+        $group: {
+          _id: null,
+          suma: { $sum: `$${campo}` },
+          cantidad: { $sum: 1 }
+        }
+      },
+      {
+        $project: {
+          promedio: { $cond: [{ $gt: ['$cantidad', 0] }, { $divide: ['$suma', '$cantidad'] }, null] },
+          _id: 0
+        }
       }
-      const promedio = parseFloat(resultadoAgregacion[0].promedio.toFixed(2));
-      res.json({ dia: diaStr, promedio });
+    ];
+
+    const resultadoAgregacion = await Dato.aggregate(canalizacionAgregacion);
+    const diaStr = inicioDia.toISOString().slice(0, 10);
+    if (resultadoAgregacion.length === 0 || resultadoAgregacion[0].promedio === null) {
+      return res.json({ dia: diaStr, promedio: null });
+    }
+    const promedio = parseFloat(resultadoAgregacion[0].promedio.toFixed(2));
+    res.json({ dia: diaStr, promedio });
   } catch (error) {
     console.error('Error en promedio día actual:', error);
     res.status(500).json({ error: 'Error al calcular promedio' });
@@ -76,23 +72,26 @@ export const getPromedioUltimos7Dias = async (req, res) => {
       presion: 'presion'
     };
     const campo = fieldMap[variable] || variable;
-    const fechaDesde = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const hoy = new Date();
+    const fechas = [];
+
+    for (let i = 0; i < 7; i++) {
+      const fecha = new Date();
+      fecha.setDate(hoy.getDate() - i);
+      fechas.push(fecha.toISOString().slice(0, 10));
+    }
     const canalizacionAgregacion = [
       {
         $match: {
-          createdAt: { $gte: fechaDesde },
+          $or: fechas.map(f => ({
+            timestamp: { $regex: `^${f}` }
+          })),
           [campo]: { $ne: null, $type: 'number' }
         }
       },
       {
         $group: {
-          _id: {
-            $dateToString: {
-              format: '%Y-%m-%d',
-              date: '$createdAt',
-              timezone: 'America/Bogota'
-            }
-          },
+          _id: { $substr: ['$timestamp', 0, 10] },
           suma: { $sum: `$${campo}` },
           cantidad: { $sum: 1 }
         }
@@ -123,7 +122,7 @@ export const getPromedioUltimos7Dias = async (req, res) => {
           weekday: 'short',
           timeZone: 'America/Bogota'
         })
-        .replace('.', ''); 
+        .replace('.', '');
 
       const diaSemanaCapitalizado =
         diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
@@ -157,10 +156,14 @@ export const getDesviacionEstandarDiaActual = async (req, res) => {
       presion: 'presion'
     };
     const campo = fieldMap[variable] || variable;
-    const timeZone = 'America/Bogota';
-    const hoy = new Date().toLocaleDateString('sv-SE', { timeZone });
+    const hoy = new Date().toISOString().slice(0, 10);
     const canalizacionAgregacion = [
-      { $match: { $expr: { $eq: [{ $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: timeZone } }, hoy] }, [campo]: { $ne: null, $type: 'number' } } },
+      {
+        $match: {
+          timestamp: { $regex: `^${hoy}` },
+          [campo]: { $ne: null, $type: 'number' }
+        }
+      },
       {
         $group: {
           _id: null,
@@ -216,25 +219,18 @@ export const getPromedioMensual = async (req, res) => {
     };
     const campo = fieldMap[variable] || variable;
 
-    const [year, month] = mes.split('-').map(Number);
-    const fechaInicio = new Date(year, month - 1, 1);
-    const fechaFin = new Date(year, month, 1);
 
     const canalizacionAgregacion = [
       {
         $match: {
-          createdAt: { $gte: fechaInicio, $lt: fechaFin },
+          timestamp: { $regex: `^${mes}` },
           [campo]: { $ne: null, $type: 'number' }
         }
       },
       {
         $group: {
           _id: {
-            $dateToString: {
-              format: '%Y-%m-%d',
-              date: '$createdAt',
-              timezone: 'America/Bogota'
-            }
+            $substr: ['$timestamp', 0, 10]
           },
           suma: { $sum: `$${campo}` },
           cantidad: { $sum: 1 }
@@ -295,19 +291,14 @@ export const getCuartilesDiaActual = async (req, res) => {
     };
 
     const campo = fieldMap[variable] || variable;
-    const timeZone = 'America/Bogota';
-    const hoy = new Date().toLocaleDateString('sv-SE', { timeZone });
+
+    const hoy = new Date().toISOString().slice(0, 10);
 
     const datos = await Dato.aggregate([
       {
         $match: {
-          $expr: {
-            $eq: [
-              { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-              hoy
-            ]
-          },
-          [campo]: { $ne: null, $type: "number" }
+          timestamp: { $regex: `^${hoy}` },
+          [campo]: { $ne: null, $type: 'number' }
         }
       },
       {

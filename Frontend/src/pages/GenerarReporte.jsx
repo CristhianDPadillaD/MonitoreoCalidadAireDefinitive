@@ -67,12 +67,7 @@ const GenerarReporte = () => {
       const response = await fetch(url);
       if (!response.ok) throw new Error("No se pudo generar el PDF");
 
-      const blob = await response.blob();
-      const link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = "reporte_calidad_aire.pdf";
-      link.click();
-      link.remove();
+      window.open(url, "_blanck");
     } catch (error) {
       console.error(error);
       alert("Error al generar el PDF");
