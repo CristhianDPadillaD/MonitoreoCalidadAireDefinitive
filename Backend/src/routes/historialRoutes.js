@@ -12,6 +12,7 @@ import {
 
 import{
   getPromedioDiaActual,
+  getPromedioPorHoras,
   getPromedioUltimos7Dias,
   getPromedioMensual,
   getDesviacionEstandarDiaActual,
@@ -42,6 +43,7 @@ router.get('/ultimas/presiones', getUltimasPresiones);
 
 // Agregaciones
 router.get('/promedio-dia', getPromedioDiaActual);
+router.get('/promedio-hora', getPromedioPorHoras);
 router.get('/promedio-semana', getPromedioUltimos7Dias);
 router.get('/promedio-mes', getPromedioMensual);
 router.get('/desviacion-estandar-dia', getDesviacionEstandarDiaActual);
