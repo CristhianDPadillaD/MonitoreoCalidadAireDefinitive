@@ -94,6 +94,80 @@
     border: 1px solid #ffffff;
 }
 
+.loginModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  padding: 1rem;
+}
+
+.loginModalCard {
+  width: 100%;
+  max-width: 520px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 1.8rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.loginModalTitle {
+  margin-bottom: 1rem;
+  font-size: 1.6rem;
+  color: #333333;
+}
+
+.loginModalText {
+  margin-bottom: 0.8rem;
+  color: #555555;
+  line-height: 1.5;
+}
+
+.loginModalHint {
+  margin-bottom: 1.4rem;
+  color: #666666;
+  font-size: 0.95rem;
+}
+
+.loginModalActions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.loginModalPrimaryButton {
+  background-color: #2865a1;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.loginModalPrimaryButton:hover {
+  background-color: #1b4e7a;
+}
+
+.loginModalSecondaryButton {
+  background-color: #e5e7eb;
+  color: #1f2937;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.loginModalSecondaryButton:hover {
+  background-color: #d1d5db;
+}
+
 
 /* =======================
    Boton hamburguesa menu
@@ -173,5 +247,13 @@
 
   .navBarLogo {
     height: 32px;
+  }
+
+  .loginModalCard {
+    padding: 1.4rem;
+  }
+
+  .loginModalTitle {
+    font-size: 1.3rem;
   }
 }

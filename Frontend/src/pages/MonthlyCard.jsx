@@ -120,12 +120,12 @@ export default function MonthlyCard() {
         </select>
 
         <select value={variable} onChange={handleVariableChange}>
-          <option value="pm1">PM1</option>
-          <option value="pm25">PM2.5</option>
-          <option value="pm10">PM10</option>
-          <option value="co">CO</option>
-          <option value="presion">Presión</option>
-          <option value="temperatura">Temperatura</option>
+          <option value="pm1">PM1 (μg/m³)</option>
+          <option value="pm25">PM2.5 (μg/m³)</option>
+          <option value="pm10">PM10 (μg/m³)</option>
+          <option value="co">CO (mg/m³)</option>
+          <option value="presion">Presión (hPa)</option>
+          <option value="temperatura">Temperatura (°C)</option>
         </select>
       </div>
 

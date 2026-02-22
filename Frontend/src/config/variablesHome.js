@@ -1,8 +1,8 @@
 export const VARIABLES = [
   {
     key: "pm2_5",
-    label: "PM 2.5 ",
-    unit: "µg/m³",
+    label: "PM 2.5 (μg/m³)",
+    unit: "μg/m³",
     thresholds: [
       { max: 12, color: "#c3f5c3ff", label: "Buena" },
       { max: 37, color: "#ecec93ff", label: "Aceptable" },
@@ -13,8 +13,8 @@ export const VARIABLES = [
   },
   {
     key: "co",
-    label: "Monóxido de Carbono (CO)",
-    unit: "ppm",
+    label: "Monóxido de Carbono (CO) (mg/m³)",
+    unit: "mg/m³",
     thresholds: [
       { max: 4.4, color: "#c3f5c3ff", label: "Buena" },
       { max: 9.4, color: "#ecec93ff", label: "Aceptable" },

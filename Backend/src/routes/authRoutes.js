@@ -10,7 +10,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 router.get(
   '/google/callback',
-  passport.authenticate('google', { session: false, failureRedirect: `${FRONTEND_URL}/login` }),
+  passport.authenticate('google', { session: false, failureRedirect: `${FRONTEND_URL}/?loginError=not-allowed` }),
   (req, res) => {
     try {
       const user = req.user;
@@ -26,7 +26,7 @@ router.get(
       return res.redirect(`${FRONTEND_URL}/auth-success?token=${token}`);
     } catch (err) {
       console.error('Error generating JWT after Google auth:', err);
-      return res.redirect(`${FRONTEND_URL}/login`);
+      return res.redirect(`${FRONTEND_URL}/?loginError=auth-failed`);
     }
   }
 );

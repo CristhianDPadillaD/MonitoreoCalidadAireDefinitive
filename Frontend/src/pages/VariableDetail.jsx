@@ -4,6 +4,7 @@ import SimpleAreaChart from "../components/graficos/SimpleAreaChart";
 import Histograma10Dias from "../components/graficos/Histograma7Dias";
 import AnilloDiario from "../components/graficos/AnilloDiario";
 import Boxplot from "../components/graficos/Bloxpot";
+import Linea24Horas from "../components/graficos/Linea24Horas";
 import { VARIABLES_ALL } from "../config/variablesAll";
 import nivelesPorVariable from "../config/nivelesPorVariable";
 import importanciasPorVariable from "../config/importanciasPorVariable";
@@ -17,6 +18,8 @@ export default function VariableDetail() {
   const [dataSemana, setDataSemana] = useState([]);
   const [dataDia, setDataDia] = useState(null);
   const [desviacionDia, setDesviacionDia] = useState(null);
+  const [data24Horas, setData24Horas] = useState(null);
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,12 +51,20 @@ export default function VariableDetail() {
         const desvJson = await resDesviacion.json();
         setDesviacionDia(desvJson);
 
+        // Obtener datos de 24 horas para la fecha seleccionada
+        const res24Horas = await fetch(
+          `http://localhost:3000/api/historial/promedio-hora?variable=${v.key}&fecha=${fechaSeleccionada}`
+        );
+        const horas24Json = await res24Horas.json();
+        setData24Horas(horas24Json);
+
       } catch (error) {
         console.error("Error cargando los datos:", error);
         setDataLive([]);
         setDataSemana([]);
         setDataDia(null);
-        setDesviacionDia(null); 
+        setDesviacionDia(null);
+        setData24Horas(null);
       }
     };
 
@@ -61,7 +72,11 @@ export default function VariableDetail() {
     fetchData();
     const interval = setInterval(fetchData, 10000);
     return () => clearInterval(interval);
-  }, [v.key]);
+  }, [v.key, fechaSeleccionada]);
+
+  const handleDayClick = (dia) => {
+    setFechaSeleccionada(dia);
+  };
 
   const colorGlobal = "#47a2b9ff";
   const niveles = nivelesPorVariable[v.key] || [];
@@ -83,8 +98,17 @@ export default function VariableDetail() {
       </div>
 
       <div className="variablePromediosContainer">
-        <Histograma10Dias data={dataSemana} variable={v.key} />
+        <Histograma10Dias 
+          data={dataSemana} 
+          variable={v.key} 
+          onDayClick={handleDayClick}
+          selectedDay={fechaSeleccionada}
+        />
         <AnilloDiario data={dataDia} variable={v.key} desviacion={desviacionDia} />
+      </div>
+
+      <div className="graficaHoras24Wrapper">
+        <Linea24Horas data={data24Horas} variable={v.key} fecha={fechaSeleccionada} />
       </div>
 
       <div className="boxplotWrapper">

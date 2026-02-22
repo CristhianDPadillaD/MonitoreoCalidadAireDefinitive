@@ -6,18 +6,24 @@ import "../../styles/components/anilloDiario.css"
 export default function AnilloDiario({ data, variable, desviacion }) {
   console.log("data recibida en AnilloDiario:", data, "Variable:", variable);
 
-  if (!data || data.promedio === undefined) {
-    return <p>Cargando datos del día...</p>;
+  // Validación defensiva de datos
+  if (!data || data.promedio === undefined || data.promedio === null) {
+    return (
+      <div className="anilloContainer">
+        <h3>Promedio diario</h3>
+        <p className="sinDatos">No hay datos disponibles para el día de hoy.</p>
+      </div>
+    );
   }
 
-  const valor = data.promedio;
+  const valor = typeof data.promedio === 'number' ? data.promedio : 0;
 
   // obtener los niveles correspondientes a la variable actual
   const niveles = nivelesPorVariable[variable] || [];
 
   // buscar el color según el rango
   const nivel = niveles.find(
-    (n) => valor >= n.rango[0] && valor <= n.rango[1]
+    (n) => n && n.rango && Array.isArray(n.rango) && valor >= n.rango[0] && valor <= n.rango[1]
   );
   const colorVariable = nivel ? nivel.color : "#47a2b9";
 
@@ -42,7 +48,7 @@ export default function AnilloDiario({ data, variable, desviacion }) {
 
   const maximo = obtenerMaximo(variable);
   const porcentaje = Math.min((valor / maximo) * 100, 100);
-  const restante = 100 - porcentaje;
+  const restante = Math.max(100 - porcentaje, 0);
 
   const chartData = [
     { name: "Promedio diario", value: porcentaje },
@@ -50,6 +56,12 @@ export default function AnilloDiario({ data, variable, desviacion }) {
   ];
 
   const COLORS = [colorVariable, "#e0e0e0"];
+
+  // Validar desviación estándar
+  const desviacionValor = desviacion?.desviacionEstandar;
+  const desviacionTexto = (desviacionValor !== undefined && desviacionValor !== null) 
+    ? (typeof desviacionValor === 'number' ? desviacionValor.toFixed(2) : String(desviacionValor))
+    : null;
 
   return (
     <div className="anilloContainer">
@@ -88,23 +100,23 @@ export default function AnilloDiario({ data, variable, desviacion }) {
             dominantBaseline="middle"
             className="valorCentralAnillo"
           >
-            {valor.toFixed(2)}
+            {typeof valor === 'number' ? valor.toFixed(2) : '0.00'}
           </text>
 
           <Legend />
         </PieChart>
       </ResponsiveContainer>
       <div className="nivelDesviacionContainer">
-        {nivel && (
+        {nivel && nivel.label && (
           <p className="nivelEtiqueta">
             Nivel: <strong>{nivel.label}</strong>
           </p>
 
         )}
 
-        {desviacion && (
+        {desviacionTexto !== null && (
           <p className="nivelEtiqueta">
-            Desviación estándar: <strong>{desviacion.desviacionEstandar}</strong>
+            Desviación estándar: <strong>{desviacionTexto}</strong>
           </p>
         )}
       </div>
