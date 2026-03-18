@@ -29,3 +29,20 @@
   padding: 2rem 1rem;
   font-size: 0.95rem;
 }
+
+.limiteReferenciaAnillo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+  color: #7f1d1d;
+  font-size: 0.88rem;
+}
+
+.lineaLimiteAnillo {
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: #dc2626;
+}

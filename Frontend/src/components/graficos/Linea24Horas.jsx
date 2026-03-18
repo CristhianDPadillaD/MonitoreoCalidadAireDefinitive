@@ -9,7 +9,8 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
-import nivelesPorVariable from "../../config/nivelesPorVariable";
+import nivelesPorVariable, { obtenerLimiteMaximo } from "../../config/nivelesPorVariable";
+import { VARIABLES_ALL } from "../../config/variablesAll";
 
 export default function Linea24Horas({ data, variable, fecha }) {
   if (!data || !data.horas || data.horas.length === 0) {
@@ -45,6 +46,8 @@ export default function Linea24Horas({ data, variable, fecha }) {
 
   // Obtener niveles para colorear puntos
   const niveles = nivelesPorVariable[variable] || [];
+  const unidad = VARIABLES_ALL.find((item) => item.key === variable)?.unidad || "";
+  const limiteMaximo = obtenerLimiteMaximo(variable);
 
   const obtenerColorPorValor = (valor) => {
     if (valor === null || valor === undefined) return "#ccc";
@@ -146,7 +149,28 @@ export default function Linea24Horas({ data, variable, fecha }) {
             tick={{ fontSize: 12 }}
             interval={2}
           />
-          <YAxis />
+          <YAxis
+            label={{
+              value: unidad || "Valor",
+              angle: -90,
+              position: "insideLeft",
+            }}
+          />
+          {limiteMaximo !== null && (
+            <ReferenceLine
+              y={limiteMaximo}
+              stroke="#dc2626"
+              strokeWidth={2}
+              strokeDasharray="6 4"
+              ifOverflow="extendDomain"
+              label={{
+                value: `Límite: ${limiteMaximo}${unidad ? ` ${unidad}` : ""}`,
+                fill: "#dc2626",
+                fontSize: 11,
+                position: "right",
+              }}
+            />
+          )}
           <Tooltip content={<CustomTooltip />} />
           <Line
             type="monotone"

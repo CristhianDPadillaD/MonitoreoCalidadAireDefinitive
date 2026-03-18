@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { obtenerLimiteMaximo } from "../../config/nivelesPorVariable";
+import { VARIABLES_ALL } from "../../config/variablesAll";
 
 export default function Boxplot({ variable }) {
     const [box, setBox] = useState(null);
@@ -33,9 +35,16 @@ export default function Boxplot({ variable }) {
     if (!box) return <div>No hay registros en el dia actual.</div>;
 
     const { q1, q2, q3, limite_inferior, limite_superior, valoresAtipicos = [] } = box;
+    const limiteMaximo = obtenerLimiteMaximo(variable);
+    const unidad = VARIABLES_ALL.find((item) => item.key === variable)?.unidad || "";
+    const limiteNumerico = typeof limiteMaximo === "number" ? limiteMaximo : null;
 
     let min = limite_inferior;
     let max = limite_superior;
+    if (limiteNumerico !== null) {
+        min = Math.min(min, limiteNumerico);
+        max = Math.max(max, limiteNumerico);
+    }
     if (min === max) {
         const padding = Math.max(1, Math.abs(min) * 0.1);
         min = min - padding;
@@ -59,6 +68,7 @@ export default function Boxplot({ variable }) {
     const xMed = scaleX(q2);
     const xQ3 = scaleX(q3);
     const xMax = scaleX(limite_superior);
+    const xLimiteMaximo = limiteNumerico !== null ? scaleX(limiteNumerico) : null;
 
     const boxHeight = 36;
     const boxTop = centerY - boxHeight / 2;
@@ -83,6 +93,29 @@ export default function Boxplot({ variable }) {
                 <svg viewBox={`0 0 ${viewWidth} ${viewHeight}`} width="100%" height={viewHeight}>
                     {/* línea de whiskers */}
                     <line x1={xMin} x2={xMax} y1={whiskerY} y2={whiskerY} stroke="#94a3b8" strokeWidth={2} />
+
+                    {xLimiteMaximo !== null && (
+                        <>
+                            <line
+                                x1={xLimiteMaximo}
+                                x2={xLimiteMaximo}
+                                y1={boxTop - 20}
+                                y2={centerY + boxHeight / 2 + 26}
+                                stroke="#dc2626"
+                                strokeWidth={2}
+                                strokeDasharray="5 4"
+                            />
+                            <text
+                                x={xLimiteMaximo}
+                                y={boxTop - 26}
+                                fontSize="11"
+                                fill="#dc2626"
+                                textAnchor="middle"
+                            >
+                                {`Límite máx: ${limiteNumerico}${unidad ? ` ${unidad}` : ""}`}
+                            </text>
+                        </>
+                    )}
 
                     {/* extremos (cap lines) */}
                     <line x1={xMin} x2={xMin} y1={whiskerY - 18} y2={whiskerY + 18} stroke="#94a3b8" strokeWidth={2} />
@@ -160,6 +193,10 @@ export default function Boxplot({ variable }) {
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <div style={{ width: 22, height: 4, background: "#1e40af" }} />
                     <small style={{ color: "#374151" }}>Mediana</small>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 22, height: 0, borderTop: "2px dashed #dc2626" }} />
+                    <small style={{ color: "#374151" }}>Límite máximo</small>
                 </div>
             </div>
         </div>

@@ -62,6 +62,7 @@ export default function Home() {
                 label={v.label}
                 value={Number(readings[v.key] ?? 0)}
                 unit={v.unit}
+                variableKey={v.key}
                 min={v.min}
                 max={v.max}
                 thresholds={v.thresholds}

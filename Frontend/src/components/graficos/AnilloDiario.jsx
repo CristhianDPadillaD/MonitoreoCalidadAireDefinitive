@@ -1,6 +1,7 @@
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import nivelesPorVariable from "../../config/nivelesPorVariable";
+import nivelesPorVariable, { obtenerLimiteMaximo } from "../../config/nivelesPorVariable";
+import { VARIABLES_ALL } from "../../config/variablesAll";
 import "../../styles/components/anilloDiario.css"
 
 export default function AnilloDiario({ data, variable, desviacion }) {
@@ -26,27 +27,8 @@ export default function AnilloDiario({ data, variable, desviacion }) {
     (n) => n && n.rango && Array.isArray(n.rango) && valor >= n.rango[0] && valor <= n.rango[1]
   );
   const colorVariable = nivel ? nivel.color : "#47a2b9";
-
-  const obtenerMaximo = (variable) => {
-    switch (variable) {
-      case "pm1":
-        return 50;
-      case "pm2_5":
-        return 250;
-      case "pm10":
-        return 500;
-      case "co":
-        return 30;
-      case "temperatura":
-        return 40;
-      case "presion":
-        return 1100;
-      default:
-        return 100;
-    }
-  };
-
-  const maximo = obtenerMaximo(variable);
+  const unidad = VARIABLES_ALL.find((item) => item.key === variable)?.unidad || "";
+  const maximo = obtenerLimiteMaximo(variable) ?? 100;
   const porcentaje = Math.min((valor / maximo) * 100, 100);
   const restante = Math.max(100 - porcentaje, 0);
 
@@ -106,6 +88,12 @@ export default function AnilloDiario({ data, variable, desviacion }) {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
+      <div className="limiteReferenciaAnillo">
+        <span className="lineaLimiteAnillo" />
+        <p>
+          Límite máximo: <strong>{maximo}{unidad ? ` ${unidad}` : ""}</strong>
+        </p>
+      </div>
       <div className="nivelDesviacionContainer">
         {nivel && nivel.label && (
           <p className="nivelEtiqueta">

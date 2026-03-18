@@ -7,13 +7,18 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
+import { VARIABLES_ALL } from "../../config/variablesAll";
+import { obtenerLimiteMaximo } from "../../config/nivelesPorVariable";
 
-const SimpleAreaChart = ({ data, color = "#3b82f6" }) => {
+const SimpleAreaChart = ({ data, variable, color = "#3b82f6" }) => {
   const formattedData = data.map((value, index) => ({
     name: index + 1,
     valor: value,
   }));
+  const unidad = VARIABLES_ALL.find((item) => item.key === variable)?.unidad || "";
+  const limiteMaximo = obtenerLimiteMaximo(variable);
 
   return (
     <ResponsiveContainer width="100%" height={200}>
@@ -31,10 +36,34 @@ const SimpleAreaChart = ({ data, color = "#3b82f6" }) => {
           tick={{ fill: "#555", fontSize: 12 }}
           axisLine={{ stroke: "#aaa" }}
           tickLine={{ stroke: "#aaa" }}
+          label={{
+            value: unidad || "Valor",
+            angle: -90,
+            position: "insideLeft",
+          }}
+        />
+
+        <XAxis
+          label={{ value: "Tiempo", position: "insideBottom", offset: -8 }}
         />
 
         {/* Cuadrícula */}
         <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+        {limiteMaximo !== null && (
+          <ReferenceLine
+            y={limiteMaximo}
+            stroke="#dc2626"
+            strokeWidth={2}
+            strokeDasharray="6 4"
+            ifOverflow="extendDomain"
+            label={{
+              value: `Límite: ${limiteMaximo}${unidad ? ` ${unidad}` : ""}`,
+              fill: "#dc2626",
+              fontSize: 11,
+              position: "right",
+            }}
+          />
+        )}
         <Tooltip
           contentStyle={{
             backgroundColor: "#ffffff",

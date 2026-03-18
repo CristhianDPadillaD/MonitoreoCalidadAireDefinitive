@@ -71,7 +71,7 @@ const VariableSelect = () => {
             <div key={key} className="variableCard">
               <h2 className="variableTitulo">{label}</h2>
               <div className="variableGraficoContainer">
-                <SimpleAreaChart data={data[key]} color={colorGlobal} />
+                <SimpleAreaChart data={data[key]} variable={key} color={colorGlobal} />
               </div>
               <button
                 className="verDetalleButton"

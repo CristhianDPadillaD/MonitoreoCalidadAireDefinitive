@@ -1,5 +1,5 @@
 const importanciasPorVariable = {
-  pm1: "Las partículas PM1 son las más pequeñas del material particulado y pueden ingresar profundamente en los pulmones, afectando el sistema respiratorio.",
+  pm1: "Las partículas PM1 son las más pequeñas del material particulado y pueden ingresar profundamente en los pulmones, afectando el sistema respiratorio. (Hay que tener en cuenta que al no tener una norma que regule los niveles de PM1 nacionalmente o internacionalmente, se toman como referencia los niveles de PM2.5 establecidos por la resolución 2254 del 2017",
   pm25: "Las partículas PM2.5 son tan finas que pueden llegar hasta los alvéolos pulmonares y entrar al torrente sanguíneo, causando enfermedades cardiovasculares y respiratorias.",
   pm10: "El material particulado PM10 incluye polvo, polen y humo. Su exposición prolongada puede irritar las vías respiratorias y agravar el asma.",
   co: "El monóxido de carbono (CO) es un gas tóxico que impide el transporte de oxígeno en la sangre, pudiendo causar mareos o incluso la muerte en concentraciones altas.",

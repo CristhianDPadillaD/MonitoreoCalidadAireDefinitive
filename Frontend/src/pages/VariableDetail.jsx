@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import SimpleAreaChart from "../components/graficos/SimpleAreaChart";
-import Histograma10Dias from "../components/graficos/Histograma7Dias";
+import Histograma7Dias from "../components/graficos/Histograma7Dias";
 import AnilloDiario from "../components/graficos/AnilloDiario";
 import Boxplot from "../components/graficos/Bloxpot";
 import Linea24Horas from "../components/graficos/Linea24Horas";
@@ -90,15 +90,17 @@ export default function VariableDetail() {
 
       <h1 className="variableDetailTitulo">{v.label}</h1>
       <p className="variableSubtitulo">
-        Nivel de {v.label} en estos momentos
+        Nivel de {v.label} en estos momentos.
+        Los datos de esta grafica se actualizan cada 5 segundos para mostrar la información más reciente.
+        Son graficados los ultimos 10 registros disponibles en la base de datos.
       </p>
 
       <div className="graficoTiempoReal">
-        <SimpleAreaChart data={dataLive} color={colorGlobal} />
+        <SimpleAreaChart data={dataLive} variable={v.key} color={colorGlobal}  />
       </div>
 
       <div className="variablePromediosContainer">
-        <Histograma10Dias 
+        <Histograma7Dias 
           data={dataSemana} 
           variable={v.key} 
           onDayClick={handleDayClick}
