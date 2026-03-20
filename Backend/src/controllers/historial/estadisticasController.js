@@ -18,38 +18,38 @@ export const getPromedioDiaActual = async (req, res) => {
 
     const campo = fieldMap[variable] || variable;
 
+    const hoyDate = new Date();
+    const year = hoyDate.getFullYear();
+    const month = String(hoyDate.getMonth() + 1).padStart(2, '0');
+    const day = String(hoyDate.getDate()).padStart(2, '0');
 
-    const hoy = new Date().toISOString().slice(0, 10);
+    const hoy = `${year}-${month}-${day}`;
+
+    const inicioDia = `${hoy} 00:00:00`;
+    const finDia = `${hoy} 23:59:59`;
 
     const canalizacionAgregacion = [
       {
         $match: {
-          timestamp: { $regex: `^${hoy}` },
+          timestamp: { $gte: inicioDia, $lte: finDia },
           [campo]: { $ne: null, $type: 'number' }
         }
       },
       {
         $group: {
           _id: null,
-          suma: { $sum: `$${campo}` },
-          cantidad: { $sum: 1 }
-        }
-      },
-      {
-        $project: {
-          promedio: { $cond: [{ $gt: ['$cantidad', 0] }, { $divide: ['$suma', '$cantidad'] }, null] },
-          _id: 0
+          promedio: { $avg: `$${campo}` }
         }
       }
+
     ];
 
     const resultadoAgregacion = await Dato.aggregate(canalizacionAgregacion);
-    const diaStr = hoy;
     if (resultadoAgregacion.length === 0 || resultadoAgregacion[0].promedio === null) {
       return res.json({ dia: diaStr, promedio: null });
     }
     const promedio = parseFloat(resultadoAgregacion[0].promedio.toFixed(2));
-    res.json({ dia: diaStr, promedio });
+    res.json({ dia: hoy, promedio });
   } catch (error) {
     console.error('Error en promedio día actual:', error);
     res.status(500).json({ error: 'Error al calcular promedio' });
@@ -77,7 +77,6 @@ export const getPromedioPorHoras = async (req, res) => {
 
     const campo = fieldMap[variable] || variable;
 
-    // 🔥 Si no envían fecha, usar día actual (zona Colombia)
     if (!fecha) {
       fecha = new Date().toLocaleDateString('sv-SE', {
         timeZone: 'America/Bogota'
@@ -118,12 +117,12 @@ export const getPromedioPorHoras = async (req, res) => {
 
     const resultados = await Dato.aggregate(pipeline);
     if (resultados.length === 0) {
-  return res.status(404).json({
-    fecha,
-    variable,
-    mensaje: `No existen datos registrados para el día ${fecha}`
-  });
-}
+      return res.status(404).json({
+        fecha,
+        variable,
+        mensaje: `No existen datos registrados para el día ${fecha}`
+      });
+    }
 
     const respuesta = resultados.map(r => ({
       hora: `${r.hora}:00`,
@@ -197,7 +196,10 @@ export const getPromedioUltimos7Dias = async (req, res) => {
     const promediosCalculados = await Dato.aggregate(canalizacionAgregacion);
 
     if (promediosCalculados.length === 0) {
-      return res.json([]);
+      return res.status(404).json({
+        variable,
+        mensaje: 'No hay datos registrados en los últimos 7 días'
+      });
     }
 
     const resultado = promediosCalculados.map(p => {

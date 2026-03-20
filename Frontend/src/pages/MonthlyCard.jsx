@@ -64,8 +64,8 @@ export default function MonthlyCard() {
         // crear matriz con los días del mes
         const matriz = Array.from({ length: diasEnMes }, () => null);
         data.forEach((d) => {
-          const diaNum = new Date(d.dia).getDate();
-          matriz[diaNum] = d.promedio;
+          const diaNum = parseInt(d.dia.split("-")[2]);;
+          matriz[diaNum-1] = d.promedio;
         });
 
         setDatos(matriz);
