@@ -42,7 +42,6 @@ export const getUltimosPorVariable = async (req, res) => {
       registros = await obtenerHistorico(cantidad * 10);
     }
 
-    // Validar que la variable exista
     const variablesValidas = [
       'co',
       'pm1',

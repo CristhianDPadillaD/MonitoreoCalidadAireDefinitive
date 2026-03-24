@@ -21,12 +21,12 @@ const VariableSelect = () => {
     const fetchData = async () => {
       try {
         const endpoints = {
-          pm1: "http://localhost:3000/api/historial/ultimos/pm1",
-          pm25: "http://localhost:3000/api/historial/ultimos/pm25",
-          pm10: "http://localhost:3000/api/historial/ultimos/pm10",
-          co: "http://localhost:3000/api/historial/ultimos/co",
-          temperatura: "http://localhost:3000/api/historial/ultimas/temperaturas",
-          presion: "http://localhost:3000/api/historial/ultimas/presiones",
+          pm1: "http://localhost:3000/api/historial/ultimosDatos?pm1",
+          pm25: "http://localhost:3000/api/historial/ultimosDatos?pm2_5",
+          pm10: "http://localhost:3000/api/historial/ultimosDatos?pm10",
+          co: "http://localhost:3000/api/historial/ultimosDatos?co",
+          temperatura: "http://localhost:3000/api/historial/ultimasDatos?temperatura",
+          presion: "http://localhost:3000/api/historial/ultimaosDatos?presion",
         };
 
         const responses = await Promise.all(
