@@ -1,7 +1,13 @@
 import express from 'express';
 import {
   getUltimoDato,
-  getUltimosPorVariable
+    getUltimosCO,
+  getUltimosPM1,
+  getUltimosPM25,
+  getUltimosPM10,
+  getUltimasTemperaturas,
+  getUltimasPresiones,
+  //getUltimosPorVariable
 } from '../controllers/historial/historicoController.js';
 
 
@@ -26,8 +32,17 @@ const router = express.Router();
 // Últimos datos completos
 router.get('/ultimo', getUltimoDato);
 
+router.get('/ultimos/co', getUltimosCO);
+router.get('/ultimos/pm1', getUltimosPM1);
+router.get('/ultimos/pm25', getUltimosPM25);
+router.get('/ultimos/pm10', getUltimosPM10);
+
+// Otras variables
+router.get('/ultimas/temperaturas', getUltimasTemperaturas);
+router.get('/ultimas/presiones', getUltimasPresiones);
+
 // Últimos 10 valores por contaminante
-router.get('/ultimosDatos', getUltimosPorVariable);
+//router.get('/ultimosDatos', getUltimosPorVariable);
 
 // Agregaciones
 router.get('/promedio-dia', getPromedioDiaActual);
