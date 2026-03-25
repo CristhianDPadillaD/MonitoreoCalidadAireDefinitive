@@ -12,11 +12,41 @@ import {
 import { VARIABLES_ALL } from "../../config/variablesAll";
 import { obtenerLimiteMaximo } from "../../config/nivelesPorVariable";
 
+const formatearHora = (timestamp, fallback) => {
+  if (!timestamp || typeof timestamp !== "string") return fallback;
+
+  const partes = timestamp.split(" ");
+  if (partes.length > 1 && partes[1]) return partes[1];
+
+  const fecha = new Date(timestamp);
+  if (!Number.isNaN(fecha.getTime())) {
+    return fecha.toLocaleTimeString("es-CO", { hour12: false });
+  }
+
+  return fallback;
+};
+
 const SimpleAreaChart = ({ data, variable, color = "#3b82f6" }) => {
-  const formattedData = data.map((value, index) => ({
-    name: index + 1,
-    valor: value,
-  }));
+  const formattedData = (Array.isArray(data) ? data : []).map((item, index) => {
+    const fallbackHora = `${index + 1}`;
+
+    if (item && typeof item === "object" && !Array.isArray(item)) {
+      const valorNumerico = Number(item.valor ?? item.value ?? 0);
+
+      return {
+        name: index + 1,
+        hora: formatearHora(item.timestamp, fallbackHora),
+        valor: Number.isFinite(valorNumerico) ? valorNumerico : 0,
+      };
+    }
+
+    const valorNumerico = Number(item);
+    return {
+      name: index + 1,
+      hora: fallbackHora,
+      valor: Number.isFinite(valorNumerico) ? valorNumerico : 0,
+    };
+  });
   const unidad = VARIABLES_ALL.find((item) => item.key === variable)?.unidad || "";
   const limiteMaximo = obtenerLimiteMaximo(variable);
 
@@ -44,7 +74,11 @@ const SimpleAreaChart = ({ data, variable, color = "#3b82f6" }) => {
         />
 
         <XAxis
-          label={{ value: "Tiempo", position: "insideBottom", offset: -8 }}
+          dataKey="hora"
+          tick={{ fill: "#555", fontSize: 10 }}
+          axisLine={{ stroke: "#aaa" }}
+          tickLine={{ stroke: "#aaa" }}
+          label={{ value: "Hora", position: "insideBottom", offset: -8 }}
         />
 
         {/* Cuadrícula */}
@@ -65,6 +99,8 @@ const SimpleAreaChart = ({ data, variable, color = "#3b82f6" }) => {
           />
         )}
         <Tooltip
+          labelFormatter={(label) => `Hora: ${label}`}
+          formatter={(value) => [`${value}${unidad ? ` ${unidad}` : ""}`, "Valor"]}
           contentStyle={{
             backgroundColor: "#ffffff",
             border: "1px solid #ccc",
