@@ -26,8 +26,8 @@ export default function VariableDetail() {
       try {
         const endpointLive =
           v.key === "temperatura" || v.key === "presion"
-            ? `http://localhost:3000/api/historial/ultimosDatos/${v.key === "temperatura" ? "temperaturas" : "presiones"}`
-            : `http://localhost:3000/api/historial/ultimosDatos/${v.key}`;
+            ? `http://localhost:3000/api/historial/ultimas/${v.key === "temperatura" ? "temperaturas" : "presiones"}`
+            : `http://localhost:3000/api/historial/ultimos/${v.key}`;
 
         const resLive = await fetch(endpointLive);
         const jsonLive = await resLive.json();
