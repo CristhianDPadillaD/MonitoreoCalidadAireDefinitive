@@ -59,4 +59,16 @@ export const obtenerLimiteMaximo = (variable) => {
 
 export { limitesPorVariable };
 
+// Devuelve el color correspondiente al nivel dado un valor para una variable
+export const obtenerColorPorValor = (variable, valor) => {
+  const clave = aliasVariable[variable] || variable;
+  const niveles = nivelesPorVariable[clave] || [];
+  if (valor === null || valor === undefined || Number.isNaN(Number(valor))) return null;
+  const v = Number(valor);
+  const nivel = niveles.find(
+    (n) => n && n.rango && Array.isArray(n.rango) && v >= n.rango[0] && v <= n.rango[1]
+  );
+  return nivel ? nivel.color : null;
+};
+
 export default nivelesPorVariable;

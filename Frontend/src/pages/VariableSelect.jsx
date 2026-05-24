@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import SimpleAreaChart from "../components/graficos/SimpleAreaChart";
+import { obtenerColorPorValor } from "../config/nivelesPorVariable";
 import { useNavigate } from "react-router-dom";
 import "../styles/pages/variableSelect.css";
 
@@ -15,7 +16,7 @@ const VariableSelect = () => {
     presion: [],
   });
 
-  const colorGlobal = "#47a2b9ff";
+  const colorFallback = "#47a2b9";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +72,22 @@ const VariableSelect = () => {
             <div key={key} className="variableCard">
               <h2 className="variableTitulo">{label}</h2>
               <div className="variableGraficoContainer">
-                <SimpleAreaChart data={data[key]} variable={key} color={colorGlobal} />
+                {(() => {
+                  const arr = data[key];
+                  let ultimo = null;
+                  if (Array.isArray(arr) && arr.length) {
+                    for (let i = arr.length - 1; i >= 0; i--) {
+                      const it = arr[i];
+                      const val = Number(it?.valor ?? it?.value ?? it ?? NaN);
+                      if (Number.isFinite(val)) {
+                        ultimo = val;
+                        break;
+                      }
+                    }
+                  }
+                  const color = obtenerColorPorValor(key, ultimo) || colorFallback;
+                  return <SimpleAreaChart data={data[key]} variable={key} color={color} />;
+                })()}
               </div>
               <button
                 className="verDetalleButton"

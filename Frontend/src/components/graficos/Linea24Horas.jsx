@@ -57,6 +57,18 @@ export default function Linea24Horas({ data, variable, fecha }) {
     return nivel ? nivel.color : "#47a2b9";
   };
 
+  // Calcular color de la línea según el último valor numérico disponible
+  const ultimoValorPromedio = (() => {
+    if (!Array.isArray(horasCompletas) || horasCompletas.length === 0) return null;
+    for (let i = horasCompletas.length - 1; i >= 0; i--) {
+      const v = horasCompletas[i].promedio;
+      if (v !== null && v !== undefined && !Number.isNaN(Number(v))) return Number(v);
+    }
+    return null;
+  })();
+
+  const lineaColor = obtenerColorPorValor(ultimoValorPromedio) || "#2865a1";
+
   // Tooltip personalizado
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -175,7 +187,7 @@ export default function Linea24Horas({ data, variable, fecha }) {
           <Line
             type="monotone"
             dataKey="promedio"
-            stroke="#2865a1"
+            stroke={lineaColor}
             strokeWidth={2}
             dot={<CustomDot />}
             connectNulls

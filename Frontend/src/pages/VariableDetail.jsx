@@ -6,7 +6,7 @@ import AnilloDiario from "../components/graficos/AnilloDiario";
 import Boxplot from "../components/graficos/Bloxpot";
 import Linea24Horas from "../components/graficos/Linea24Horas";
 import { VARIABLES_ALL } from "../config/variablesAll";
-import nivelesPorVariable from "../config/nivelesPorVariable";
+import nivelesPorVariable, { obtenerColorPorValor } from "../config/nivelesPorVariable";
 import importanciasPorVariable from "../config/importanciasPorVariable";
 import "../styles/pages/variableDetail.css";
 
@@ -78,8 +78,19 @@ export default function VariableDetail() {
     setFechaSeleccionada(dia);
   };
 
-  const colorGlobal = "#47a2b9ff";
+  // Determinar color según el último valor disponible (si existe)
   const niveles = nivelesPorVariable[v.key] || [];
+  const ultimoValor = (() => {
+    if (!Array.isArray(dataLive) || dataLive.length === 0) return null;
+    for (let i = dataLive.length - 1; i >= 0; i--) {
+      const item = dataLive[i];
+      const val = Number(item?.valor ?? item?.value ?? item ?? NaN);
+      if (Number.isFinite(val)) return val;
+    }
+    return null;
+  })();
+
+  const colorGlobal = obtenerColorPorValor(v.key, ultimoValor) || "#47a2b9";
   const importanciaTexto = importanciasPorVariable[v.key] || "";
 
   return (
