@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { obtenerLimiteMaximo } from "../../config/nivelesPorVariable";
 import { VARIABLES_ALL } from "../../config/variablesAll";
+import { API_URL } from "../../services/api";
 
 export default function Boxplot({ variable }) {
     const [box, setBox] = useState(null);
@@ -10,7 +11,7 @@ export default function Boxplot({ variable }) {
     useEffect(() => {
         if (!variable) return;
         setLoading(true);
-        fetch(`http://localhost:3000/api/historial/cuartiles-dia?variable=${variable}`)
+        fetch(`${API_URL}/api/historial/cuartiles-dia?variable=${variable}`)
             .then((r) => r.json())
             .then((json) => {
                 if (json && json.boxplot) {

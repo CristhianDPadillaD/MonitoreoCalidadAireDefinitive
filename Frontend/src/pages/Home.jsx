@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Termometro from "../components/graficos/Termometro";
 import { VARIABLES } from "../config/variablesHome";
+import { API_URL } from "../services/api";
 import "../styles/pages/home.css";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function Home() {
   // funcion que consulta la api
   const obtenerUltimoDato = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/historial/ultimo");
+      const res = await fetch(`${API_URL}/api/historial/ultimo`);
       if (!res.ok) throw new Error("Error al obtener los datos");
       const data = await res.json();
 

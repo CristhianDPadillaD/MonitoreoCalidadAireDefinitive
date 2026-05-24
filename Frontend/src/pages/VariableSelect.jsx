@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import SimpleAreaChart from "../components/graficos/SimpleAreaChart";
 import { obtenerColorPorValor } from "../config/nivelesPorVariable";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../services/api";
 import "../styles/pages/variableSelect.css";
 
 const VariableSelect = () => {
@@ -22,12 +23,12 @@ const VariableSelect = () => {
     const fetchData = async () => {
       try {
         const endpoints = {
-          pm1: "http://localhost:3000/api/historial/ultimos/pm1",
-          pm25: "http://localhost:3000/api/historial/ultimos/pm25",
-          pm10: "http://localhost:3000/api/historial/ultimos/pm10",
-          co: "http://localhost:3000/api/historial/ultimos/co",
-          temperatura: "http://localhost:3000/api/historial/ultimas/temperaturas",
-          presion: "http://localhost:3000/api/historial/ultimas/presiones",
+          pm1: `${API_URL}/api/historial/ultimos/pm1`,
+          pm25: `${API_URL}/api/historial/ultimos/pm25`,
+          pm10: `${API_URL}/api/historial/ultimos/pm10`,
+          co: `${API_URL}/api/historial/ultimos/co`,
+          temperatura: `${API_URL}/api/historial/ultimas/temperaturas`,
+          presion: `${API_URL}/api/historial/ultimas/presiones`,
         };
 
         const responses = await Promise.all(

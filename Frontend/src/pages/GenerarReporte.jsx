@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_URL } from "../services/api";
 import "../styles/pages/generarReporte.css";
 
 const GenerarReporte = () => {
@@ -61,7 +62,7 @@ const GenerarReporte = () => {
 
   const descargarPdf = async (fechaInicio, fechaFin = null) => {
     try {
-      let url = `http://localhost:3000/api/historial/generar-pdf?fechaInicio=${fechaInicio}`;
+      let url = `${API_URL}/api/historial/generar-pdf?fechaInicio=${fechaInicio}`;
       if (fechaFin) url += `&fechaFin=${fechaFin}`;
 
       const response = await fetch(url);

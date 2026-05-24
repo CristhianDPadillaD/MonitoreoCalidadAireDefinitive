@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_URL } from "../services/api";
 import "../styles/pages/dataDownload.css";
 
 const DataDownload = () => {
@@ -24,7 +25,7 @@ const DataDownload = () => {
         const fecha = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
         
         // Construir URL base
-        let url = `http://localhost:3000/api/historial/descargar-csv?fechaInicio=${fecha}`;
+        let url = `${API_URL}/api/historial/descargar-csv?fechaInicio=${fecha}`;
         
         // Agregar parámetros de hora si están presentes (formato HH:00)
         if (horaInicio) {
@@ -71,7 +72,7 @@ const DataDownload = () => {
         const fechaInicio = `${startYear}-${String(startMonth).padStart(2, "0")}-${String(startDay).padStart(2, "0")}`;
         const fechaFin = `${endYear}-${String(endMonth).padStart(2, "0")}-${String(endDay).padStart(2, "0")}`;
         
-        const url = `http://localhost:3000/api/historial/descargar-csv?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+        const url = `${API_URL}/api/historial/descargar-csv?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
         setErrorMensajeRango("");
 
         try {

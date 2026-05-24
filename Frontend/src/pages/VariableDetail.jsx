@@ -8,6 +8,7 @@ import Linea24Horas from "../components/graficos/Linea24Horas";
 import { VARIABLES_ALL } from "../config/variablesAll";
 import nivelesPorVariable, { obtenerColorPorValor } from "../config/nivelesPorVariable";
 import importanciasPorVariable from "../config/importanciasPorVariable";
+import { API_URL } from "../services/api";
 import "../styles/pages/variableDetail.css";
 
 export default function VariableDetail() {
@@ -26,34 +27,34 @@ export default function VariableDetail() {
       try {
         const endpointLive =
           v.key === "temperatura" || v.key === "presion"
-            ? `http://localhost:3000/api/historial/ultimas/${v.key === "temperatura" ? "temperaturas" : "presiones"}`
-            : `http://localhost:3000/api/historial/ultimos/${v.key}`;
+            ? `${API_URL}/api/historial/ultimas/${v.key === "temperatura" ? "temperaturas" : "presiones"}`
+            : `${API_URL}/api/historial/ultimos/${v.key}`;
 
         const resLive = await fetch(endpointLive);
         const jsonLive = await resLive.json();
         setDataLive(Object.values(jsonLive)[0] || []);
 
         const resSemana = await fetch(
-          `http://localhost:3000/api/historial/promedio-semana?variable=${v.key}`
+          `${API_URL}/api/historial/promedio-semana?variable=${v.key}`
         );
         const semanaJson = await resSemana.json();
         setDataSemana(Array.isArray(semanaJson) ? semanaJson : []);
 
         const resDia = await fetch(
-          `http://localhost:3000/api/historial/promedio-dia?variable=${v.key}`
+          `${API_URL}/api/historial/promedio-dia?variable=${v.key}`
         );
         const diaJson = await resDia.json();
         setDataDia(diaJson);
 
         const resDesviacion = await fetch(
-          `http://localhost:3000/api/historial/desviacion-estandar-dia?variable=${v.key}`
+          `${API_URL}/api/historial/desviacion-estandar-dia?variable=${v.key}`
         );
         const desvJson = await resDesviacion.json();
         setDesviacionDia(desvJson);
 
         // Obtener datos de 24 horas para la fecha seleccionada
         const res24Horas = await fetch(
-          `http://localhost:3000/api/historial/promedio-hora?variable=${v.key}&fecha=${fechaSeleccionada}`
+          `${API_URL}/api/historial/promedio-hora?variable=${v.key}&fecha=${fechaSeleccionada}`
         );
         const horas24Json = await res24Horas.json();
         setData24Horas(horas24Json);

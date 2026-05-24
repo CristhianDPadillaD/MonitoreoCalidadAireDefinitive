@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import nivelesPorVariable from "../config/nivelesPorVariable"; 
+import nivelesPorVariable from "../config/nivelesPorVariable";
+import { API_URL } from "../services/api";
 import "../styles/pages/monthlyCard.css";
 
 export default function MonthlyCard() {
@@ -47,7 +48,7 @@ export default function MonthlyCard() {
       try {
         const mesStr = `${anio}-${String(mes).padStart(2, "0")}`;
         const res = await fetch(
-          `http://localhost:3000/api/historial/promedio-mes?variable=${variable}&mes=${mesStr}`
+          `${API_URL}/api/historial/promedio-mes?variable=${variable}&mes=${mesStr}`
         );
 
         if (!res.ok) {

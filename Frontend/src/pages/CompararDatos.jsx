@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { API_URL } from "../services/api";
 import "../styles/pages/compararDatos.css"
 
 const CompararDatos = () => {
@@ -28,7 +29,7 @@ const CompararDatos = () => {
     const fecha1 = construirFecha(startYear, startMonth, startDay);
     const fecha2 = construirFecha(endYear, endMonth, endDay);
 
-    const url = `http://localhost:3000/api/historial/comparacion-dias-pdf?fecha1=${fecha1}&fecha2=${fecha2}`;
+    const url = `${API_URL}/api/historial/comparacion-dias-pdf?fecha1=${fecha1}&fecha2=${fecha2}`;
     window.open(url, "_blank");
   };
 
