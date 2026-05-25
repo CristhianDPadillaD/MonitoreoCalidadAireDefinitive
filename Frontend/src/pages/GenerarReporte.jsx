@@ -68,7 +68,17 @@ const GenerarReporte = () => {
       const response = await fetch(url);
       if (!response.ok) throw new Error("No se pudo generar el PDF");
 
-      window.open(url, "_blanck");
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = fechaFin
+        ? `reporte_${fechaInicio}_a_${fechaFin}.pdf`
+        : `reporte_${fechaInicio}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error(error);
       alert("Error al generar el PDF");

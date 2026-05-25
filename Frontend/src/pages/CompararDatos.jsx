@@ -25,12 +25,29 @@ const CompararDatos = () => {
       .padStart(2, "0")}`;
   };
 
-  const handleDescargar = () => {
-    const fecha1 = construirFecha(startYear, startMonth, startDay);
-    const fecha2 = construirFecha(endYear, endMonth, endDay);
+  const handleDescargar = async () => {
+    try {
+      const fecha1 = construirFecha(startYear, startMonth, startDay);
+      const fecha2 = construirFecha(endYear, endMonth, endDay);
 
-    const url = `${API_URL}/api/historial/comparacion-dias-pdf?fecha1=${fecha1}&fecha2=${fecha2}`;
-    window.open(url, "_blank");
+      const url = `${API_URL}/api/historial/comparacion-dias-pdf?fecha1=${fecha1}&fecha2=${fecha2}`;
+
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("No se pudo generar el PDF");
+
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = `comparacion_dias_${fecha1}_vs_${fecha2}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error(error);
+      alert("Error al generar el PDF");
+    }
   };
 
   return (
