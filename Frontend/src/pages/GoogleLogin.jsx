@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import '../styles/pages/googleLogin.css';
 
 export default function GoogleLogin() {
-  const backend = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const backend = (import.meta.env.VITE_API_URL || 'http://localhost:3000').replace(/\/$/, '');
 
   const handleLogin = () => {
     window.location.href = `${backend}/api/auth/google`;
